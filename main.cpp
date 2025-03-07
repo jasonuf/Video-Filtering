@@ -4,12 +4,13 @@
 
 #include <QCheckBox>
 #include <QtWidgets>
+#include "windowParent.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    QWidget window;
+    windowParent window;
     w.setWindowTitle("Example Name: HI!");
 
     QPushButton *button = new QPushButton(
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
     layout->addWidget(lineEdit);
     window.setLayout(layout);
 
-
+    window.show();
     w.show();
 
     return a.exec();
