@@ -8,6 +8,9 @@
 #include <QLabel>
 #include <QAction>
 #include <QFile>
+#include <QtMultimedia/QMediaPlayer>
+#include <QtMultimediaWidgets/QVideoWidget>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -42,9 +45,10 @@ private:
     void createMenus();
     void createActions();
 
-    QString* videoOpen;
-
-
+    QStringList* openVideoFilesList;
+    QUrl testUrl;
+    QMediaPlayer* videoPlayer;
+    QVideoWidget* vidWidget;
 
 
 
