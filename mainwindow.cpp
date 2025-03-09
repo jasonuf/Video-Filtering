@@ -17,10 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setFixedSize(960,540);
 
-    videoOpen = new QString(QFileDialog::getOpenFileName(this,
-        tr("Open Image"), "./", tr("Image Files (*.png *.jpg *.bmp)")));
 
-    qInfo() << "The property videoOpen is set to: " << *videoOpen;
+
     qInfo() << "Main Window Created";
 
 
@@ -44,4 +42,12 @@ void MainWindow::createMenus()
 
 }
 
+
+
+void MainWindow::on_actionOpen_File_triggered()
+{
+    videoOpen = new QString(QFileDialog::getOpenFileName(this,
+        tr("Open Video"), "/", tr("Video Files (*.mp4)")));
+    qInfo() << "The property videoOpen is set to: " << *videoOpen;
+}
 
