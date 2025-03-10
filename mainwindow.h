@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimediaWidgets/QVideoWidget>
+#include <QBoxLayout>
 
 
 QT_BEGIN_NAMESPACE
@@ -50,6 +51,13 @@ private:
     QMediaPlayer* videoPlayer;
     QVideoWidget* vidWidget;
 
+    QBoxLayout* masterLayout;
+    QBoxLayout* col1Layout;
+    QBoxLayout* col2Layout;
+    QWidget* myWidget1;
+    QWidget* myWidget2;
+    QWidget* myWidget3;
+    QWidget* myWidget4;
 
 
 
