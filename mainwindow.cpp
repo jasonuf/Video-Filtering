@@ -10,6 +10,7 @@
 #include <QFileDialog>
 
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ui->setupUi(this);
+
     //setFixedSize(960,540);
     //showFullScreen();
     centralWidget()->resize(100,100);
@@ -37,7 +39,11 @@ MainWindow::MainWindow(QWidget *parent)
     yellowPal.setColor(QPalette::Window, Qt::yellow);
     QPalette greenPal = QPalette();
     greenPal.setColor(QPalette::Window, Qt::green);
+    QPalette customPal = QPalette();
+    customPal.setColor(QPalette::Window, QColor(45, 51, 50));
 
+    this->setPalette(customPal);
+    this->menuBar()->setPalette(customPal);
     // QWidget* masterWidget = new QWidget();
 
     // setCentralWidget(masterWidget);
@@ -48,11 +54,13 @@ MainWindow::MainWindow(QWidget *parent)
     col2Layout = new QBoxLayout(QBoxLayout::Direction::TopToBottom);
 
 
+    videoPlayer = new QMediaPlayer(this);
+    vidWidget = new QVideoWidget();
 
 
-    myWidget1 = new QWidget();
-    myWidget1->setAutoFillBackground(true);
-    myWidget1->setPalette(blackPal);
+    // myWidget1 = new QWidget();
+    // myWidget1->setAutoFillBackground(true);
+    // myWidget1->setPalette(blackPal);
 
     myWidget2 = new QWidget();
     myWidget2->setAutoFillBackground(true);
@@ -66,8 +74,8 @@ MainWindow::MainWindow(QWidget *parent)
     myWidget4->setAutoFillBackground(true);
     myWidget4->setPalette(greenPal);
 
-    col1Layout->addWidget(myWidget1);
-    col1Layout->addWidget(myWidget2);
+    col1Layout->addWidget(vidWidget, 3);
+    col1Layout->addWidget(myWidget2, 1);
 
     col2Layout->addWidget(myWidget3);
     col2Layout->addWidget(myWidget4);
@@ -104,14 +112,10 @@ void MainWindow::createMenus()
 void MainWindow::on_actionOpen_File_triggered()
 {
 
-    col1Layout->removeItem(col1Layout->itemAt(0));
-
     //on open file action pressed, load the selected file into the openVideoFilesList
+    delete openVideoFilesList;
     openVideoFilesList = new QStringList(QFileDialog::getOpenFileNames(this,
-        tr("Open Video"), "/", tr("Video Files (*.mp4)")));
-
-    qInfo() << "The property openVideoFilesList is set to: " << *openVideoFilesList;
-
+        tr("Open Video"), "", tr("Video Files (*.mp4 *.mov)")));
 
     if (!openVideoFilesList->isEmpty()){
         testUrl = QUrl::fromLocalFile(openVideoFilesList->at(0));
@@ -119,18 +123,12 @@ void MainWindow::on_actionOpen_File_triggered()
 
     qInfo() << "The property testURL is set to: " << testUrl;
 
-    videoPlayer = new QMediaPlayer();
+    videoPlayer->setVideoOutput(vidWidget);
     videoPlayer->setSource(testUrl);
 
-    vidWidget = new QVideoWidget(centralWidget());
-    vidWidget->resize(300,300);
-    videoPlayer->setVideoOutput(vidWidget);
 
-    vidWidget->show();
+
     videoPlayer->play();
-
-
-    col1Layout->insertWidget(0, vidWidget);
 
 }
 
