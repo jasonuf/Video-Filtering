@@ -11,6 +11,8 @@
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimediaWidgets/QVideoWidget>
 #include <QBoxLayout>
+#include <QPushButton>
+#include <QAudioOutput>
 
 
 QT_BEGIN_NAMESPACE
@@ -39,9 +41,19 @@ private slots:
 
     void on_actionOpen_File_triggered();
 
+    void videoUploadError();
+
+    void pausePlay();
+
 private:
+    bool existsVideo;
+    bool isPlaying;
+
+
     Ui::MainWindow *ui;
     VideoPlayer* mainVideo;
+
+
 
     void createMenus();
     void createActions();
@@ -50,11 +62,15 @@ private:
     QUrl testUrl;
     QMediaPlayer* videoPlayer;
     QVideoWidget* vidWidget;
+    QAudioOutput* audioOutput;
 
     QBoxLayout* masterLayout;
     QBoxLayout* col1Layout;
     QBoxLayout* col2Layout;
-    QWidget* myWidget1;
+
+    QBoxLayout* controlBarLayout;
+    QBoxLayout* vidLayout;
+    QPushButton* videoPlaceholder;
     QWidget* myWidget2;
     QWidget* myWidget3;
     QWidget* myWidget4;

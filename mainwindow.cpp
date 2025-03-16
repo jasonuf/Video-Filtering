@@ -20,15 +20,17 @@ MainWindow::MainWindow(QWidget *parent)
     openVideoFilesList = nullptr;
     videoPlayer = nullptr;
     vidWidget = nullptr;
-
-
+    existsVideo = false;
+    isPlaying = false;
 
     ui->setupUi(this);
 
     //setFixedSize(960,540);
     //showFullScreen();
-    centralWidget()->resize(100,100);
+    //centralWidget()->resize(100,100);
 
+    videoPlayer = new QMediaPlayer(this);
+    //connect(videoPlayer, &QMediaPlayer::errorOccurred, this, &MainWindow::videoUploadError);
 
     //Palletes
     QPalette blackPal = QPalette();
@@ -41,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
     greenPal.setColor(QPalette::Window, Qt::green);
     QPalette customPal = QPalette();
     customPal.setColor(QPalette::Window, QColor(45, 51, 50));
+    // QPalette wid1Pal = QPalette();
+    // wid1Pal.setColor(QPalette::Button, QColor(138, 143, 150));
 
     this->setPalette(customPal);
     this->menuBar()->setPalette(customPal);
@@ -53,18 +57,30 @@ MainWindow::MainWindow(QWidget *parent)
     col1Layout = new QBoxLayout(QBoxLayout::Direction::TopToBottom);
     col2Layout = new QBoxLayout(QBoxLayout::Direction::TopToBottom);
 
+    vidLayout = new QBoxLayout(QBoxLayout::Direction::TopToBottom);
+    controlBarLayout = new QBoxLayout(QBoxLayout::Direction::LeftToRight);
 
-    videoPlayer = new QMediaPlayer(this);
-    vidWidget = new QVideoWidget();
 
+    videoPlaceholder = new QPushButton("Upload a Video");
+    QFont f = videoPlaceholder->font();
+    f.setUnderline(true);
+    f.setItalic(true);
+    f.setFamily("Sans Regular");
+    videoPlaceholder->setFont(f);
+    //videoPlaceHolder->setAutoFillBackground(true);
+    videoPlaceholder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    //videoPlaceholder->setPalette(customPal);
+    //videoPlaceholder->setPalette(greenPal);
+    //videoPlaceholder->setAlignment(Qt::AlignCenter);
+    //videoPlaceholder->setPalette(wid1Pal);
+    vidLayout->addWidget(videoPlaceholder);
+    connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
 
-    // myWidget1 = new QWidget();
-    // myWidget1->setAutoFillBackground(true);
-    // myWidget1->setPalette(blackPal);
 
     myWidget2 = new QWidget();
     myWidget2->setAutoFillBackground(true);
     myWidget2->setPalette(bluePal);
+
 
     myWidget3 = new QWidget();
     myWidget3->setAutoFillBackground(true);
@@ -74,8 +90,14 @@ MainWindow::MainWindow(QWidget *parent)
     myWidget4->setAutoFillBackground(true);
     myWidget4->setPalette(greenPal);
 
-    col1Layout->addWidget(vidWidget, 3);
-    col1Layout->addWidget(myWidget2, 1);
+    ui->pushButton->setStyleSheet("QPushButton:enabled { background-color: rgb(97, 107, 107); }\n");
+    controlBarLayout->addWidget(ui->pushButton, 0, Qt::AlignLeft);
+    connect(ui->pushButton, &QAbstractButton::clicked,this, &MainWindow::pausePlay);
+
+
+    col1Layout->addLayout(vidLayout, 75);
+    col1Layout->addLayout(controlBarLayout, 5);
+    col1Layout->addWidget(myWidget2, 20);
 
     col2Layout->addWidget(myWidget3);
     col2Layout->addWidget(myWidget4);
@@ -119,16 +141,48 @@ void MainWindow::on_actionOpen_File_triggered()
 
     if (!openVideoFilesList->isEmpty()){
         testUrl = QUrl::fromLocalFile(openVideoFilesList->at(0));
+        if (!existsVideo){
+            vidWidget = new QVideoWidget(this);
+            audioOutput = new QAudioOutput;
+            videoPlayer->setAudioOutput(audioOutput);
+
+            existsVideo = true;
+            videoPlayer->setVideoOutput(vidWidget);
+            vidLayout->removeWidget(videoPlaceholder);
+            vidLayout->addWidget(vidWidget);
+            videoPlaceholder->hide();
+
+        }
+
+        videoPlayer->setSource(testUrl);
+
     }
+
 
     qInfo() << "The property testURL is set to: " << testUrl;
 
-    videoPlayer->setVideoOutput(vidWidget);
-    videoPlayer->setSource(testUrl);
-
-
-
-    videoPlayer->play();
 
 }
 
+void MainWindow::videoUploadError(){
+    qInfo() << "uploadSignalStarted";
+    videoPlayer->stop();
+    videoPlayer->setSource(QUrl(""));
+
+
+}
+void MainWindow::pausePlay(){
+    if (!existsVideo){
+        return;
+    }
+
+    if (!isPlaying){
+        isPlaying = true;
+        videoPlayer->play();
+    }
+    else{
+        isPlaying = false;
+        videoPlayer->pause();
+    }
+
+}
