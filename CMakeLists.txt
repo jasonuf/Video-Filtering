@@ -23,9 +23,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(widgetTest
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        videoclip.h
+        videoclip.cpp
+        timeline.h timeline.cpp
 
-        videoplayer.h
-        videoplayer.cpp
+
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET widgetTest APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

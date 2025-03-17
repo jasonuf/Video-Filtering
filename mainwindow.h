@@ -1,9 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
-#include "videoplayer.h"
-
 #include <QMainWindow>
 #include <QLabel>
 #include <QAction>
@@ -13,6 +10,8 @@
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QAudioOutput>
+
+#include "videoclip.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -41,8 +40,6 @@ private slots:
 
     void on_actionOpen_File_triggered();
 
-    void videoUploadError();
-
     void pausePlay();
 
 private:
@@ -51,7 +48,6 @@ private:
 
 
     Ui::MainWindow *ui;
-    VideoPlayer* mainVideo;
 
 
 
@@ -76,7 +72,8 @@ private:
     QWidget* myWidget4;
 
 
-
+    VideoClip* testClip;
+    QVideoWidget* testVideoWidget;
 
 
 };

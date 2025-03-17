@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "videoplayer.h"
+
 
 
 #include <QMenuBar>
@@ -11,6 +11,7 @@
 
 
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     //initialize opened video location to be empty;
     openVideoFilesList = nullptr;
-    videoPlayer = nullptr;
     vidWidget = nullptr;
     existsVideo = false;
     isPlaying = false;
@@ -30,7 +30,9 @@ MainWindow::MainWindow(QWidget *parent)
     //centralWidget()->resize(100,100);
 
     videoPlayer = new QMediaPlayer(this);
-    //connect(videoPlayer, &QMediaPlayer::errorOccurred, this, &MainWindow::videoUploadError);
+    // connect(videoPlayer, &QMediaPlayer::errorOccurred, this, [](QMediaPlayer::Error error, const QString &errorString) -> void {
+    //     qInfo() << "Your error was: " << errorString;
+    // });
 
     //Palletes
     QPalette blackPal = QPalette();
@@ -73,7 +75,14 @@ MainWindow::MainWindow(QWidget *parent)
     //videoPlaceholder->setPalette(greenPal);
     //videoPlaceholder->setAlignment(Qt::AlignCenter);
     //videoPlaceholder->setPalette(wid1Pal);
-    vidLayout->addWidget(videoPlaceholder);
+
+
+    testClip = new VideoClip(this);
+    testVideoWidget = new QVideoWidget(this);
+    testClip->setClipWidget(testVideoWidget);
+    vidLayout->addWidget(testVideoWidget);
+    testClip->playPlayer();
+
     connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
 
 
@@ -113,9 +122,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-
-
     delete ui;
+    delete openVideoFilesList;
 }
 
 void MainWindow::actionTest()
@@ -142,11 +150,10 @@ void MainWindow::on_actionOpen_File_triggered()
     if (!openVideoFilesList->isEmpty()){
         testUrl = QUrl::fromLocalFile(openVideoFilesList->at(0));
         if (!existsVideo){
+            existsVideo = true;
             vidWidget = new QVideoWidget(this);
             audioOutput = new QAudioOutput;
             videoPlayer->setAudioOutput(audioOutput);
-
-            existsVideo = true;
             videoPlayer->setVideoOutput(vidWidget);
             vidLayout->removeWidget(videoPlaceholder);
             vidLayout->addWidget(vidWidget);
@@ -164,13 +171,7 @@ void MainWindow::on_actionOpen_File_triggered()
 
 }
 
-void MainWindow::videoUploadError(){
-    qInfo() << "uploadSignalStarted";
-    videoPlayer->stop();
-    videoPlayer->setSource(QUrl(""));
 
-
-}
 void MainWindow::pausePlay(){
     if (!existsVideo){
         return;
