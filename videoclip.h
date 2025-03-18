@@ -20,11 +20,16 @@ public:
     QUrl* getClipSource() const {return clipSource;}
     QVideoSink* getClipSink() const {return clipSink;}
     QMediaPlayer* getClipPlayer() const {return clipPlayer;}
+    qint64 getClipDuration() const {return clipPlayer->duration();};
 
 
     void setClipWidget(QVideoWidget* v);
+    void setClipSink(QVideoWidget* v);
+    void setClipSink(QVideoSink* sink);
+
 
     void playPlayer();
+    void pausePlayer();
 
 private:
     qint64 positionStart;

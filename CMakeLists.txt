@@ -26,6 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         videoclip.h
         videoclip.cpp
         timeline.h timeline.cpp
+        player.h player.cpp
 
 
 

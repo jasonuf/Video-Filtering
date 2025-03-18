@@ -12,6 +12,7 @@
 #include <QAudioOutput>
 
 #include "videoclip.h"
+#include "timeline.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -72,7 +73,10 @@ private:
     QWidget* myWidget4;
 
 
-    VideoClip* testClip;
+    VideoClip* testClip1;
+    VideoClip* testClip2;
+    Timeline* timeline;
+
     QVideoWidget* testVideoWidget;
 
 

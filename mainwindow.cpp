@@ -77,11 +77,20 @@ MainWindow::MainWindow(QWidget *parent)
     //videoPlaceholder->setPalette(wid1Pal);
 
 
-    testClip = new VideoClip(this);
+    testClip1 = new VideoClip(this);
+    testClip2 = new VideoClip(this);
+    timeline = new Timeline(this);
     testVideoWidget = new QVideoWidget(this);
-    testClip->setClipWidget(testVideoWidget);
+
+    timeline->addClip(testClip1);
+    timeline->addClip(testClip2);
+
+    timeline->setVideoWidget(testVideoWidget);
+
+
     vidLayout->addWidget(testVideoWidget);
-    testClip->playPlayer();
+
+    timeline->play();
 
     connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
 
