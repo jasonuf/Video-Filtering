@@ -23,6 +23,7 @@ public:
     qint64 getClipDuration() const {return clipPlayer->duration();};
 
 
+
     void setClipWidget(QVideoWidget* v);
     void setClipSink(QVideoWidget* v);
     void setClipSink(QVideoSink* sink);

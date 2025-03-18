@@ -75,6 +75,7 @@ private:
 
     VideoClip* testClip1;
     VideoClip* testClip2;
+    VideoClip* testClip3;
     Timeline* timeline;
 
     QVideoWidget* testVideoWidget;

@@ -8,8 +8,7 @@
 #include <QDebug>
 
 #include <QFileDialog>
-
-
+#include <QStackedWidget>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -79,21 +78,39 @@ MainWindow::MainWindow(QWidget *parent)
 
     testClip1 = new VideoClip(this);
     testClip2 = new VideoClip(this);
+    testClip3 = new VideoClip(this);
     timeline = new Timeline(this);
-    testVideoWidget = new QVideoWidget(this);
+    //testVideoWidget = new QVideoWidget(this);
 
     timeline->addClip(testClip1);
     timeline->addClip(testClip2);
+    timeline->addClip(testClip3);
 
-    timeline->setVideoWidget(testVideoWidget);
+    //timeline->setVideoWidget(testVideoWidget);
 
+    vidLayout->addWidget(timeline);
 
-    vidLayout->addWidget(testVideoWidget);
-
-    timeline->play();
+    timeline->playFromBeginning();
 
     connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
 
+    /////////---------------------------
+    // QStackedWidget* stack = new QStackedWidget(this);
+    // QWidget* myWidget6 = new QWidget();
+    // myWidget6->setAutoFillBackground(true);
+    // myWidget6->setPalette(yellowPal);
+
+    // QWidget* myWidget7 = new QWidget();
+    // myWidget7->setAutoFillBackground(true);
+    // myWidget7->setPalette(greenPal);
+
+    // stack->addWidget(myWidget6);
+    // stack->addWidget(myWidget7);
+
+    // stack->setCurrentIndex(1);
+
+    // vidLayout->addWidget(stack);
+    //////////////////------------------------
 
     myWidget2 = new QWidget();
     myWidget2->setAutoFillBackground(true);
