@@ -10,11 +10,17 @@ VideoClip::VideoClip(QObject *parent)
     positionStart = 0;
     positionEnd = 0;
 
-    clipSource = new QUrl(QUrl::fromLocalFile("C:/Users/Jason/Downloads/tiemr.mp4"));
+    clipSource = new QUrl(QUrl::fromLocalFile("C:/Users/Jason/Downloads/countdown.mp4"));
 
-    clipPlayer = new QMediaPlayer(this->parent());
 
-    clipPlayer->setSource(*clipSource);
+    // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
+    // clipPlayer = new QMediaPlayer(this->parent());
+    // clipAudio = new QAudioOutput(this->parent());
+
+    // clipPlayer->setAudioOutput(clipAudio);
+    // clipPlayer->setSource(*clipSource);
+    // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
+
     //clipPlayer->setVideoSink(clipSink);
     //clipPlayer->setVideoOutput(clipSink);
 

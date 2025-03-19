@@ -24,7 +24,7 @@ Timeline::Timeline(QWidget *parent)
 
 Timeline::~Timeline()
 {
-// delete only if there is no parent for widget objects!!!!
+    // delete only if there is no parent for widget objects!!!!
 }
 
 void Timeline::switchStackIndex()
@@ -49,6 +49,7 @@ void Timeline::playFromBeginning()
         return;
     }
 
+    currentClipIndex = 0;
     loadClip(0);
     playClip(0);
 
@@ -119,11 +120,14 @@ void Timeline::isFinished(qint64 pos)
         if (!isPrePlayed){
             isPrePlayed = true;
             playClip(currentClipIndex+1);
+
         }
         return;
     }
 
     switchStackIndex();
+
+
 
 
     if (currentClipIndex + 2 == clips.size())
@@ -135,6 +139,7 @@ void Timeline::isFinished(qint64 pos)
     {
         isPreLoaded = false;
         isPrePlayed = false;
+
     }
 
 
@@ -148,5 +153,7 @@ void Timeline::isFinished(qint64 pos)
         currentClipIndex = 0;
         qInfo() << "Timeline done";
     }
+
+
 
 }

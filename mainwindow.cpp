@@ -11,6 +11,7 @@
 #include <QStackedWidget>
 
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -76,22 +77,37 @@ MainWindow::MainWindow(QWidget *parent)
     //videoPlaceholder->setPalette(wid1Pal);
 
 
+    testPlayer = new Player();
     testClip1 = new VideoClip(this);
     testClip2 = new VideoClip(this);
     testClip3 = new VideoClip(this);
-    timeline = new Timeline(this);
-    //testVideoWidget = new QVideoWidget(this);
 
-    timeline->addClip(testClip1);
-    timeline->addClip(testClip2);
-    timeline->addClip(testClip3);
+    testPlayer->addClip(testClip1);
+    testPlayer->addClip(testClip2);
+    testPlayer->addClip(testClip3);
 
-    //timeline->setVideoWidget(testVideoWidget);
+    vidLayout->addWidget(testPlayer);
 
-    vidLayout->addWidget(timeline);
+    testPlayer->playFromBeginning();
 
-    timeline->playFromBeginning();
+    /////---------------------------------
+    // testClip1 = new VideoClip(this);
+    // testClip2 = new VideoClip(this);
+    // testClip3 = new VideoClip(this);
+    // timeline = new Timeline(this);
 
+
+    // timeline->addClip(testClip1);
+    // timeline->addClip(testClip2);
+    // timeline->addClip(testClip3);
+
+
+
+    // vidLayout->addWidget(timeline);
+
+    // timeline->playFromBeginning();
+    //////-----------------------------------
+    ///
     connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
 
     /////////---------------------------
@@ -129,6 +145,8 @@ MainWindow::MainWindow(QWidget *parent)
     controlBarLayout->addWidget(ui->pushButton, 0, Qt::AlignLeft);
     connect(ui->pushButton, &QAbstractButton::clicked,this, &MainWindow::pausePlay);
 
+    // testScrollArea = new QScrollArea();
+    // testScrollArea->setPalette(bluePal);
 
     col1Layout->addLayout(vidLayout, 75);
     col1Layout->addLayout(controlBarLayout, 5);

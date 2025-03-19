@@ -5,6 +5,7 @@
 #include <QVideoSink>
 #include <QtMultimediaWidgets/QVideoWidget>
 #include <QVideoFrame>
+#include <QAudioOutput>
 
 #include <QTimer>
 
@@ -38,6 +39,7 @@ private:
 
     QVideoSink* clipSink;
     QMediaPlayer* clipPlayer;
+    QAudioOutput* clipAudio;
     QUrl* clipSource;
 
 public slots:

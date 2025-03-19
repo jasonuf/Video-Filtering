@@ -10,9 +10,11 @@
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QAudioOutput>
+#include <QScrollArea>
 
 #include "videoclip.h"
 #include "timeline.h"
+#include "player.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -77,6 +79,10 @@ private:
     VideoClip* testClip2;
     VideoClip* testClip3;
     Timeline* timeline;
+
+    Player* testPlayer;
+
+    QScrollArea* testScrollArea;
 
     QVideoWidget* testVideoWidget;
 
