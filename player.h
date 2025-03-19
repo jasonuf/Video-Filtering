@@ -22,8 +22,10 @@ public slots:
 
 private slots:
 
+    void handleStatusChange(QMediaPlayer::MediaStatus status);
     void whenPositionChanged(qint64 pos);
     void filterFrame(const QVideoFrame &frame);
+
 
 private:
     std::vector<VideoClip*> clips;
@@ -32,6 +34,7 @@ private:
 
     qint64 switchSourceTime;
     uint currentClipIndex;
+    qint64 currentClipDuration;
 
 
 };

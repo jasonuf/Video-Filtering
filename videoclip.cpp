@@ -36,6 +36,8 @@ VideoClip::~VideoClip()
     delete clipSource;
 }
 
+/*
+
 void VideoClip::setClipWidget(QVideoWidget *v)
 {
 
@@ -63,6 +65,8 @@ void VideoClip::setClipSink(QVideoSink *sink)
 
 
 }
+
+
 
 
 void VideoClip::playPlayer()
@@ -128,5 +132,7 @@ void VideoClip::frameDoSomething2()
 {
     qInfo() << "HI";
 }
+
+*/
 
 

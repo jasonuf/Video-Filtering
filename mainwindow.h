@@ -13,7 +13,6 @@
 #include <QScrollArea>
 
 #include "videoclip.h"
-#include "timeline.h"
 #include "player.h"
 
 
@@ -78,7 +77,6 @@ private:
     VideoClip* testClip1;
     VideoClip* testClip2;
     VideoClip* testClip3;
-    Timeline* timeline;
 
     Player* testPlayer;
 

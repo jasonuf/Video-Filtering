@@ -10,9 +10,11 @@ Player::Player(QWidget *parent)
 
 
     connect(mainPlayer, &QMediaPlayer::positionChanged, this, &Player::whenPositionChanged);
+    connect(mainPlayer, &QMediaPlayer::mediaStatusChanged, this, &Player::handleStatusChange);
 
     switchSourceTime = 0;
     currentClipIndex = 0;
+    currentClipDuration = 0;
 
 }
 
@@ -29,12 +31,20 @@ void Player::playFromBeginning()
     mainPlayer->play();
 }
 
+void Player::handleStatusChange(QMediaPlayer::MediaStatus status)
+{
+    if (status == QMediaPlayer::LoadedMedia)
+    {
+        currentClipDuration = mainPlayer->duration();
+        qInfo() << "Current Clip Duration set to: " << currentClipDuration;
+    }
+}
+
 void Player::whenPositionChanged(qint64 pos)
 {
-    switchSourceTime = mainPlayer->duration();
-    qInfo() << "Main Player duration set to: " << switchSourceTime;
 
-    if (pos < switchSourceTime)
+
+    if (pos < currentClipDuration)
     {
         return;
     }
@@ -49,6 +59,7 @@ void Player::whenPositionChanged(qint64 pos)
     mainPlayer->setSource(*clips[currentClipIndex]->getClipSource());
     mainPlayer->play();
 }
+
 
 void Player::filterFrame(const QVideoFrame &frame)
 {
@@ -96,3 +107,5 @@ void Player::filterFrame(const QVideoFrame &frame)
     this->videoSink()->setVideoFrame(copyFrame);
     inFilter = false;
 }
+
+

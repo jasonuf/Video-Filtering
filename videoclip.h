@@ -19,33 +19,33 @@ public:
 
 
     QUrl* getClipSource() const {return clipSource;}
-    QVideoSink* getClipSink() const {return clipSink;}
-    QMediaPlayer* getClipPlayer() const {return clipPlayer;}
-    qint64 getClipDuration() const {return clipPlayer->duration();};
+    // QVideoSink* getClipSink() const {return clipSink;}
+    // QMediaPlayer* getClipPlayer() const {return clipPlayer;}
+    // qint64 getClipDuration() const {return clipPlayer->duration();};
 
 
 
-    void setClipWidget(QVideoWidget* v);
-    void setClipSink(QVideoWidget* v);
-    void setClipSink(QVideoSink* sink);
+    // void setClipWidget(QVideoWidget* v);
+    // void setClipSink(QVideoWidget* v);
+    // void setClipSink(QVideoSink* sink);
 
 
-    void playPlayer();
-    void pausePlayer();
+    // void playPlayer();
+    // void pausePlayer();
 
 private:
     qint64 positionStart;
     qint64 positionEnd;
 
-    QVideoSink* clipSink;
-    QMediaPlayer* clipPlayer;
-    QAudioOutput* clipAudio;
+    // QVideoSink* clipSink;
+    // QMediaPlayer* clipPlayer;
+    // QAudioOutput* clipAudio;
     QUrl* clipSource;
 
 public slots:
 
-    void frameDoSomething(const QVideoFrame &frame);
-    void frameDoSomething2();
+    // void frameDoSomething(const QVideoFrame &frame);
+    // void frameDoSomething2();
 };
 
 
