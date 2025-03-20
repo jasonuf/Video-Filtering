@@ -22,17 +22,9 @@ public:
         QLabel* imageLabel;
         QPixmap imagePix;
         QLabel* fileLabel;
-        QWidget* testWidget;
 
         ClipDisplay(QWidget* parent, VideoClip* clip) : QVBoxLayout{parent}
         {
-            QPalette bluePal = QPalette();
-            bluePal.setColor(QPalette::Window, Qt::blue);
-
-            testWidget = new QWidget();
-            testWidget->setAutoFillBackground(true);
-            testWidget->setPalette(bluePal);
-            testWidget->setFixedSize(150,75);
 
             imageLabel = new QLabel();
             imageLabel->setFixedSize(150,75);
@@ -45,7 +37,6 @@ public:
 
             addWidget(imageLabel);
             addWidget(fileLabel);
-            addWidget(testWidget);
         }
 
     };
@@ -53,13 +44,14 @@ public:
 public slots:
     void addClips(QStringList* list);
 
-    void addToPool(std::vector<VideoClip*> clipList);
+    void addToPool(uint num);
 
 
 
 private:
     std::vector<VideoClip*> clips;
-    std::vector<VideoClip*> needToAddClips;
+    std::vector<ClipDisplay*> clipDisplays;
+
     QVBoxLayout* masterLayout;
 
     QUrl tempUrl;

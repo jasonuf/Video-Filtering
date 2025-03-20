@@ -36,16 +36,16 @@ void Pool::addClips(QStringList *list)
 
         qInfo() <<"Temp URL: " << tempUrl << " Clip: " << clips[clips.size()-1] << " File Name set to: " << clips[clips.size()-1]->getFileName();
 
-        needToAddClips.push_back(clips[clips.size()-1]);
+        clipDisplays.push_back(new ClipDisplay(nullptr, clips[clips.size()-1]));
     }
 
-    addToPool(needToAddClips);
+    addToPool(list->size());
 
     //str to url conversion
     //testUrl = QUrl::fromLocalFile(openVideoFilesList->at(0));
 }
 
-void Pool::addToPool(std::vector<VideoClip *> clipList)
+void Pool::addToPool(uint num)
 {
 
 
@@ -58,12 +58,17 @@ void Pool::addToPool(std::vector<VideoClip *> clipList)
     // testWidget->setFixedSize(200,200);
     // tempLayout->addWidget(testWidget);
 
-    for (VideoClip* c : clipList)
+    // for (VideoClip* c : clipList)
+    // {
+    //     tempLayout->addLayout(new ClipDisplay(nullptr, c), 1);
+    // }
+
+    for (int i = clipDisplays.size() - num; i < clipDisplays.size(); ++i)
     {
-        tempLayout->addLayout(new ClipDisplay(nullptr, c), 1);
+        tempLayout->addLayout(clipDisplays[i]);
     }
 
+    qInfo() << "Clips: " << clips;
+    qInfo() << "clipDisplays: " << clipDisplays;
 
-
-    needToAddClips.clear();
 }

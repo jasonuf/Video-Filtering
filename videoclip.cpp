@@ -59,8 +59,6 @@ void VideoClip::waitForThumbnail(const QVideoFrame &frame)
         clipPlayer->stop();
 
         disconnect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
-
-
     }
 }
 
