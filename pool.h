@@ -27,13 +27,13 @@ public:
         {
 
             imageLabel = new QLabel();
-            imageLabel->setFixedSize(150,75);
+            imageLabel->setFixedSize(125,70);
 
             // imagePix = QPixmap::fromImage(*clip->getThumbnail());
             // imageLabel->setPixmap(imagePix);
 
             fileLabel = new QLabel(clip->getFileName());
-            fileLabel->setFixedSize(150,25);
+            fileLabel->setFixedSize(125,15);
 
             addWidget(imageLabel);
             addWidget(fileLabel);
@@ -46,6 +46,7 @@ public slots:
 
     void addToPool(uint num);
 
+    void displayThumbnail();
 
 
 private:

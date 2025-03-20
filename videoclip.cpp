@@ -10,7 +10,8 @@ VideoClip::VideoClip(QObject *parent)
 
     thumbnail = nullptr;
 
-    clipSource = QUrl::fromLocalFile("C:/Users/Jason/Downloads/countdown.mp4");
+    clipSource = nullptr;
+   // clipSource = QUrl::fromLocalFile("C:/Users/Jason/Downloads/countdown.mp4");
 
 
     // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
@@ -19,7 +20,7 @@ VideoClip::VideoClip(QObject *parent)
     // clipAudio = new QAudioOutput(this->parent());
 
     // clipPlayer->setAudioOutput(clipAudio);
-    clipPlayer->setSource(clipSource);
+    //clipPlayer->setSource(clipSource);
     // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
 
     clipPlayer->setVideoSink(clipSink);
@@ -38,11 +39,17 @@ VideoClip::~VideoClip()
 {
 
     delete thumbnail;
+    // if (clipPlayer) delete clipPlayer;
+    // if (clipSink) delete clipSink;
 }
 
 void VideoClip::setSource(QUrl source)
 {
     clipSource = source;
+
+    clipPlayer->setSource(clipSource);
+
+    clipPlayer->play();
 }
 
 void VideoClip::setFileName(QString str)
@@ -57,8 +64,13 @@ void VideoClip::waitForThumbnail(const QVideoFrame &frame)
         thumbnail = new QImage(frame.toImage());
 
         clipPlayer->stop();
-
+        emit thumbNailLoaded();
         disconnect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
+
+        delete clipPlayer;
+        delete clipSink;
+
+        qInfo() << "Wait for thumbnail reached";
     }
 }
 

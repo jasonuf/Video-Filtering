@@ -33,6 +33,9 @@ public:
     void setSource(QUrl source);
     void setFileName(QString str);
 
+signals:
+
+    void thumbNailLoaded();
 
     // void playPlayer();
     // void pausePlayer();

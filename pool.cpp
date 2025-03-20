@@ -37,6 +37,7 @@ void Pool::addClips(QStringList *list)
         qInfo() <<"Temp URL: " << tempUrl << " Clip: " << clips[clips.size()-1] << " File Name set to: " << clips[clips.size()-1]->getFileName();
 
         clipDisplays.push_back(new ClipDisplay(nullptr, clips[clips.size()-1]));
+        connect(clips[clips.size()-1], &VideoClip::thumbNailLoaded, this, &Pool::displayThumbnail);
     }
 
     addToPool(list->size());
@@ -68,7 +69,21 @@ void Pool::addToPool(uint num)
         tempLayout->addLayout(clipDisplays[i]);
     }
 
-    qInfo() << "Clips: " << clips;
-    qInfo() << "clipDisplays: " << clipDisplays;
+}
+
+void Pool::displayThumbnail()
+{
+    QObject* obj = sender();
+
+    auto it = std::find(clips.begin(), clips.end(), obj);
+    uint index = std::distance(clips.begin(), it);
+
+    clipDisplays[index]->imagePix = QPixmap::fromImage(*clips[index]->getThumbnail());
+    clipDisplays[index]->imagePix = clipDisplays[index]->imagePix.scaled(QSize(125,70), Qt::IgnoreAspectRatio);
+    clipDisplays[index]->imageLabel->setPixmap(clipDisplays[index]->imagePix);
+
+    // qInfo() << "index" << index << " Object: " << obj;
+    // qInfo() << "image pix: " << &clipDisplays[index]->imagePix;
+    // qInfo() << "iamge Label: " << clipDisplays[index]->imageLabel;
 
 }
