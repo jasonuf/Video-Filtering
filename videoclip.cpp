@@ -4,34 +4,42 @@
 VideoClip::VideoClip(QObject *parent)
 : QObject{parent}
 {
-
+    //initialize values
     positionStart = 0;
     positionEnd = 0;
-
     thumbnail = nullptr;
-
     clipSource = nullptr;
+
    // clipSource = QUrl::fromLocalFile("C:/Users/Jason/Downloads/countdown.mp4");
 
 
     // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
+    //Create Players for each clip with the sole purpose of capturing the thumbnail
     clipPlayer = new QMediaPlayer(this);
     clipSink = new QVideoSink(this);
+    clipPlayer->setVideoSink(clipSink);
+
+    //For every frame change, check the video position. When the position reaches 200ms, grab thumbnail
+    connect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
+    clipPlayer->play();
+
+
+
     // clipAudio = new QAudioOutput(this->parent());
 
     // clipPlayer->setAudioOutput(clipAudio);
     //clipPlayer->setSource(clipSource);
     // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
 
-    clipPlayer->setVideoSink(clipSink);
+
     //clipPlayer->setVideoOutput(clipSink);
 
 
-    connect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
+
     //connect(clipSink, &QVideoSink::videoSizeChanged, this, &VideoClip::frameDoSomething2);
 
 
-    clipPlayer->play();
+
 
 }
 
@@ -45,12 +53,16 @@ VideoClip::~VideoClip()
 
 void VideoClip::setSource(QUrl source)
 {
+    //Set the source and begin playing to capture thumbnail. !!!Possible issue if clipPlayer is already deleted!!!
     clipSource = source;
 
-    clipPlayer->setSource(clipSource);
-
-    clipPlayer->play();
+    if (clipPlayer)
+    {
+        clipPlayer->setSource(clipSource);
+        clipPlayer->play();
+    }
 }
+
 
 void VideoClip::setFileName(QString str)
 {
@@ -59,10 +71,10 @@ void VideoClip::setFileName(QString str)
 
 void VideoClip::waitForThumbnail(const QVideoFrame &frame)
 {
-    if (clipPlayer->position() >= 200)
+    if (clipPlayer->position() >= 200) //when the position of the video for the source reaches 200ms
     {
-        thumbnail = new QImage(frame.toImage());
-
+        thumbnail = new QImage(frame.toImage()); //convert frame to QImage
+        //Clean up player and sink to free memory and disconnect signal/slot, also send signal to let the Pool know that the clip's thumbnail is done uploading
         clipPlayer->stop();
         emit thumbNailLoaded();
         disconnect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);

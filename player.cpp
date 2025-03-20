@@ -3,6 +3,8 @@
 Player::Player(QWidget *parent)
     : QVideoWidget(parent)
 {
+
+    //Initialize the player main components (QMediaPlayer, QAudioOutput). Then connect the signals and slots.
     mainPlayer = new QMediaPlayer(parent);
     mainAudio = new QAudioOutput(parent);
     mainPlayer->setVideoOutput(this);
@@ -11,6 +13,7 @@ Player::Player(QWidget *parent)
 
     connect(mainPlayer, &QMediaPlayer::positionChanged, this, &Player::whenPositionChanged);
     connect(mainPlayer, &QMediaPlayer::mediaStatusChanged, this, &Player::handleStatusChange);
+    connect(this->videoSink(), &QVideoSink::videoFrameChanged, this, &Player::filterFrame); //-----MOVE THIS IF SOMETHING BREAKS TO->?????
 
     switchSourceTime = 0;
     currentClipIndex = 0;
@@ -25,9 +28,11 @@ void Player::addClip(VideoClip *clip)
 
 void Player::playFromBeginning()
 {
+    //Set the current playing clip to be the first Index.
     currentClipIndex = 0;
+    //Get the clip's source based off the index and then connect the player's source to that. Then connect the
     mainPlayer->setSource(clips[currentClipIndex]->getClipSource());
-    connect(this->videoSink(), &QVideoSink::videoFrameChanged, this, &Player::filterFrame);
+    //?????????????????MOVE BACK HERE
     mainPlayer->play();
 }
 

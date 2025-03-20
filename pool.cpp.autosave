@@ -14,15 +14,16 @@ Pool::Pool(QWidget *parent)
 
 void Pool::addClips(QStringList *list)
 {
-    for (int i = 0; i < list->size(); ++i)
+    for (int i = 0; i < list->size(); ++i) //handles each QString path that is uploaded
     {
         qInfo() << "String in List : " << list->at(i);
 
-        tempFileName = list->at(i);
-        tempUrl = QUrl::fromLocalFile(list->at(i));
-        clips.push_back(new VideoClip(this));
-        clips[clips.size()-1]->setSource(tempUrl);
-
+        tempFileName = list->at(i); //Grabs the full QString path to the video file
+        tempUrl = QUrl::fromLocalFile(list->at(i)); //Grabs the path and converts it into the Url
+        clips.push_back(new VideoClip(this)); //constructs the VideoClip into the clips vector
+        clips[clips.size()-1]->setSource(tempUrl); //sets the source of the clip to the grabbed URL
+        
+        //algorithm finds the index of the last slash position in the string
         int slashPos;
         for (int j = list->at(i).size() - 1; j >= 0 ; --j)
         {
@@ -33,16 +34,18 @@ void Pool::addClips(QStringList *list)
             }
         }
 
-        tempFileName.slice(slashPos + 1);
+        tempFileName.slice(slashPos + 1); //splices the string into just the last file name
 
-        clips[clips.size()-1]->setFileName(tempFileName);
+        clips[clips.size()-1]->setFileName(tempFileName); //sets the clip's file name
 
         qInfo() <<"Temp URL: " << tempUrl << " Clip: " << clips[clips.size()-1] << " File Name set to: " << clips[clips.size()-1]->getFileName();
 
-        clipDisplays.push_back(new ClipDisplay(nullptr, clips[clips.size()-1]));
+        clipDisplays.push_back(new ClipDisplay(nullptr, clips[clips.size()-1])); //constructs the clipDisplay struct based on the grabbed clip.
+        //Connects the respective clip to signal after the thumbnail is loaded. Once it is, call the correct function
         connect(clips[clips.size()-1], &VideoClip::thumbNailLoaded, this, &Pool::displayThumbnail);
     }
-
+    
+    //Call the addToPool and pass the number of clip dis
     addToPool(list->size());
 
     //str to url conversion

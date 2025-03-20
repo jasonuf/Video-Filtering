@@ -62,17 +62,17 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     testPlayer = new Player();
-    testClip1 = new VideoClip(this);
-    testClip2 = new VideoClip(this);
-    testClip3 = new VideoClip(this);
+    // testClip1 = new VideoClip(this);
+    // testClip2 = new VideoClip(this);
+    // testClip3 = new VideoClip(this);
 
-    testPlayer->addClip(testClip1);
-    testPlayer->addClip(testClip2);
-    testPlayer->addClip(testClip3);
+    // testPlayer->addClip(testClip1);
+    // testPlayer->addClip(testClip2);
+    // testPlayer->addClip(testClip3);
 
     vidLayout->addWidget(testPlayer);
 
-    testPlayer->playFromBeginning();
+    // testPlayer->playFromBeginning();
 
 
     connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
@@ -124,7 +124,7 @@ MainWindow::MainWindow(QWidget *parent)
     testScrollArea->setWidgetResizable(true); // Change to false to preserve widget sizes
     testScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     testScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    testScrollArea->setAlignment(Qt::AlignHCenter);
+    testScrollArea->setAlignment(Qt::AlignTop);
 
     // Create scroll content widget
     // scrollWid = new QWidget();

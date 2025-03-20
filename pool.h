@@ -50,6 +50,9 @@ public slots:
 
 
 private:
+    qint16 rows;
+    qint16 cols;
+
     std::vector<VideoClip*> clips;
     std::vector<ClipDisplay*> clipDisplays;
 
