@@ -19,20 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     //initialize opened video location to be empty;
     openVideoFilesList = nullptr;
-    vidWidget = nullptr;
-    existsVideo = false;
-    isPlaying = false;
 
     ui->setupUi(this);
 
-    //setFixedSize(960,540);
-    //showFullScreen();
-    //centralWidget()->resize(100,100);
+    setMinimumSize(960,540);
 
-    videoPlayer = new QMediaPlayer(this);
-    // connect(videoPlayer, &QMediaPlayer::errorOccurred, this, [](QMediaPlayer::Error error, const QString &errorString) -> void {
-    //     qInfo() << "Your error was: " << errorString;
-    // });
 
     //Palletes
     QPalette blackPal = QPalette();
@@ -50,9 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setPalette(customPal);
     this->menuBar()->setPalette(customPal);
-    // QWidget* masterWidget = new QWidget();
 
-    // setCentralWidget(masterWidget);
 
 
     masterLayout = new QBoxLayout(QBoxLayout::Direction::LeftToRight, centralWidget());
@@ -69,12 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
     f.setItalic(true);
     f.setFamily("Sans Regular");
     videoPlaceholder->setFont(f);
-    //videoPlaceHolder->setAutoFillBackground(true);
     videoPlaceholder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-    //videoPlaceholder->setPalette(customPal);
-    //videoPlaceholder->setPalette(greenPal);
-    //videoPlaceholder->setAlignment(Qt::AlignCenter);
-    //videoPlaceholder->setPalette(wid1Pal);
 
 
     testPlayer = new Player();
@@ -90,43 +74,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     testPlayer->playFromBeginning();
 
-    /////---------------------------------
-    // testClip1 = new VideoClip(this);
-    // testClip2 = new VideoClip(this);
-    // testClip3 = new VideoClip(this);
-    // timeline = new Timeline(this);
 
-
-    // timeline->addClip(testClip1);
-    // timeline->addClip(testClip2);
-    // timeline->addClip(testClip3);
-
-
-
-    // vidLayout->addWidget(timeline);
-
-    // timeline->playFromBeginning();
-    //////-----------------------------------
-    ///
     connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
 
-    /////////---------------------------
-    // QStackedWidget* stack = new QStackedWidget(this);
-    // QWidget* myWidget6 = new QWidget();
-    // myWidget6->setAutoFillBackground(true);
-    // myWidget6->setPalette(yellowPal);
-
-    // QWidget* myWidget7 = new QWidget();
-    // myWidget7->setAutoFillBackground(true);
-    // myWidget7->setPalette(greenPal);
-
-    // stack->addWidget(myWidget6);
-    // stack->addWidget(myWidget7);
-
-    // stack->setCurrentIndex(1);
-
-    // vidLayout->addWidget(stack);
-    //////////////////------------------------
 
     myWidget2 = new QWidget();
     myWidget2->setAutoFillBackground(true);
@@ -143,17 +93,144 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->pushButton->setStyleSheet("QPushButton:enabled { background-color: rgb(97, 107, 107); }\n");
     controlBarLayout->addWidget(ui->pushButton, 0, Qt::AlignLeft);
-    connect(ui->pushButton, &QAbstractButton::clicked,this, &MainWindow::pausePlay);
+    //connect(ui->pushButton, &QAbstractButton::clicked,this, &MainWindow::pausePlay);
 
     // testScrollArea = new QScrollArea();
-    // testScrollArea->setPalette(bluePal);
+    //testScrollArea->setPalette(bluePal);
+    // testScrollArea->setWidget(myWidget3);
+    // testScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+
+    // testCol1Layout = new QVBoxLayout();
+    // testCol2Layout = new QVBoxLayout();
+
+    // testCol1Layout->addWidget(testWid1);
+    // testCol1Layout->addWidget(testWid2);
+    // testCol1Layout->addWidget(testWid3);
+
+    // testCol2Layout->addWidget(testWid4);
+    // testCol2Layout->addWidget(testWid5);
+    // testCol2Layout->addWidget(testWid6);
+
+    // testGridLayout->addLayout(testCol1Layout, 0, 0);
+    // testGridLayout->addLayout(testCol2Layout, 0, 1);
+
+    // testGridLayout->setSizeConstraint(QLayout::SetFixedSize);
+
+
+
+    // Create and set up QScrollArea
+    testScrollArea = new QScrollArea(this);
+    testScrollArea->setWidgetResizable(true); // Change to false to preserve widget sizes
+    testScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    testScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    testScrollArea->setAlignment(Qt::AlignHCenter);
+
+    // Create scroll content widget
+    // scrollWid = new QWidget();
+
+    // // Create and set up child widgets
+    // testWid1 = new QWidget();
+    // testWid1->setAutoFillBackground(true);
+    // testWid1->setPalette(blackPal);
+    // testWid1->setFixedSize(100,100);
+    // testWid2 = new QWidget();
+    // testWid2->setAutoFillBackground(true);
+    // testWid2->setPalette(bluePal);
+    // testWid2->setFixedSize(100,100);
+    // testWid3 = new QWidget();
+    // testWid3->setAutoFillBackground(true);
+    // testWid3->setPalette(yellowPal);
+    // testWid3->setFixedSize(100,100);
+    // testWid4 = new QWidget();
+    // testWid4->setAutoFillBackground(true);
+    // testWid4->setPalette(greenPal);
+    // testWid4->setFixedSize(100,100);
+    // testWid5 = new QWidget();
+    // testWid5->setAutoFillBackground(true);
+    // testWid5->setPalette(blackPal);
+    // testWid5->setFixedSize(100,100);
+    // testWid6 = new QWidget();
+    // testWid6->setAutoFillBackground(true);
+    // testWid6->setPalette(bluePal);
+    // testWid6->setFixedSize(100,100);
+    // testWid7 = new QWidget();
+    // testWid7->setAutoFillBackground(true);
+    // testWid7->setPalette(blackPal);
+    // testWid7->setFixedSize(100,100);
+    // testWid8 = new QWidget();
+    // testWid8->setAutoFillBackground(true);
+    // testWid8->setPalette(bluePal);
+    // testWid8->setFixedSize(100,100);
+    // testWid9 = new QWidget();
+    // testWid9->setAutoFillBackground(true);
+    // testWid9->setPalette(yellowPal);
+    // testWid9->setFixedSize(100,100);
+
+    // testMasterLayout = new QVBoxLayout();
+    // testRow1Layout = new QHBoxLayout();
+    // testRow2Layout = new QHBoxLayout();
+    // testRow3Layout = new QHBoxLayout();
+
+    // testRow1Layout->addWidget(testWid1);
+    // testRow1Layout->addWidget(testWid2);
+    // testRow1Layout->addWidget(testWid3);
+    // testRow1Layout->setSpacing(25);
+
+    // testRow2Layout->addWidget(testWid4);
+    // testRow2Layout->addWidget(testWid5);
+    // testRow2Layout->addWidget(testWid6);
+
+    // testRow3Layout->addWidget(testWid7);
+    // testRow3Layout->addWidget(testWid8);
+    // testRow3Layout->addWidget(testWid9);
+
+    // testMasterLayout->addLayout(testRow1Layout);
+    // testMasterLayout->addLayout(testRow2Layout);
+    // testMasterLayout->addLayout(testRow3Layout);
+
+    //--------------------------------------------------
+    // Create grid layout and add widgets
+    //testGridLayout = new QGridLayout(scrollWid);
+    //testGridLayout->setSpacing(25);
+    // testGridLayout->setContentsMargins(5,5,5,5);
+    // testGridLayout->addWidget(testWid1, 0,0);
+    // testGridLayout->addWidget(testWid2, 1,0);
+    // testGridLayout->addWidget(testWid3, 2,0);
+    // testGridLayout->addWidget(testWid4, 0,1);
+    // testGridLayout->addWidget(testWid5, 1,1);
+    // testGridLayout->addWidget(testWid6, 2,1);
+
+
+    // Set the layout for the scroll widget
+
+
+    // Calculate the size needed for the grid
+    //scrollWid->adjustSize();
+
+    // Set the scroll widget as the widget for the scroll area
+
+
+
+
+    ////------------------------------------------------ Pool testing
+    ///
+    ///
+    poolw = new Pool();
+
+    connect(this, &MainWindow::sendFileStringList, poolw, &Pool::addClips);
+
+
+    testScrollArea->setWidget(poolw);
+
 
     col1Layout->addLayout(vidLayout, 75);
     col1Layout->addLayout(controlBarLayout, 5);
     col1Layout->addWidget(myWidget2, 20);
 
-    col2Layout->addWidget(myWidget3);
-    col2Layout->addWidget(myWidget4);
+    // Add widgets to col2Layout with stretch factors
+    col2Layout->addWidget(testScrollArea, 50);
+    col2Layout->addWidget(myWidget4, 50);
 
     masterLayout->addLayout(col1Layout, 2);
     masterLayout->addLayout(col2Layout, 1);
@@ -191,43 +268,10 @@ void MainWindow::on_actionOpen_File_triggered()
     openVideoFilesList = new QStringList(QFileDialog::getOpenFileNames(this,
         tr("Open Video"), "", tr("Video Files (*.mp4 *.mov)")));
 
-    if (!openVideoFilesList->isEmpty()){
-        testUrl = QUrl::fromLocalFile(openVideoFilesList->at(0));
-        if (!existsVideo){
-            existsVideo = true;
-            vidWidget = new QVideoWidget(this);
-            audioOutput = new QAudioOutput;
-            videoPlayer->setAudioOutput(audioOutput);
-            videoPlayer->setVideoOutput(vidWidget);
-            vidLayout->removeWidget(videoPlaceholder);
-            vidLayout->addWidget(vidWidget);
-            videoPlaceholder->hide();
+    emit sendFileStringList(openVideoFilesList);
 
-        }
-
-        videoPlayer->setSource(testUrl);
-
-    }
-
-
-    qInfo() << "The property testURL is set to: " << testUrl;
+    //testUrl = QUrl::fromLocalFile(openVideoFilesList->at(0));
 
 
 }
 
-
-void MainWindow::pausePlay(){
-    if (!existsVideo){
-        return;
-    }
-
-    if (!isPlaying){
-        isPlaying = true;
-        videoPlayer->play();
-    }
-    else{
-        isPlaying = false;
-        videoPlayer->pause();
-    }
-
-}

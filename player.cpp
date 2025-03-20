@@ -26,7 +26,7 @@ void Player::addClip(VideoClip *clip)
 void Player::playFromBeginning()
 {
     currentClipIndex = 0;
-    mainPlayer->setSource(*clips[currentClipIndex]->getClipSource());
+    mainPlayer->setSource(clips[currentClipIndex]->getClipSource());
     connect(this->videoSink(), &QVideoSink::videoFrameChanged, this, &Player::filterFrame);
     mainPlayer->play();
 }
@@ -56,7 +56,7 @@ void Player::whenPositionChanged(qint64 pos)
         currentClipIndex = 0;
         return;
     }
-    mainPlayer->setSource(*clips[currentClipIndex]->getClipSource());
+    mainPlayer->setSource(clips[currentClipIndex]->getClipSource());
     mainPlayer->play();
 }
 

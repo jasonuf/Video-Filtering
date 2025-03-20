@@ -14,6 +14,7 @@
 
 #include "videoclip.h"
 #include "player.h"
+#include "pool.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -30,6 +31,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+
+    void sendFileStringList(QStringList* list);
 
 public slots:
 
@@ -42,11 +46,8 @@ private slots:
 
     void on_actionOpen_File_triggered();
 
-    void pausePlay();
 
 private:
-    bool existsVideo;
-    bool isPlaying;
 
 
     Ui::MainWindow *ui;
@@ -57,10 +58,8 @@ private:
     void createActions();
 
     QStringList* openVideoFilesList;
-    QUrl testUrl;
-    QMediaPlayer* videoPlayer;
-    QVideoWidget* vidWidget;
-    QAudioOutput* audioOutput;
+
+
 
     QBoxLayout* masterLayout;
     QBoxLayout* col1Layout;
@@ -80,7 +79,29 @@ private:
 
     Player* testPlayer;
 
+    Pool* poolw;
+
+
+
     QScrollArea* testScrollArea;
+    QGridLayout* testGridLayout;
+    QVBoxLayout* testMasterLayout;
+    QHBoxLayout* testRow1Layout;
+    QHBoxLayout* testRow2Layout;
+    QHBoxLayout* testRow3Layout;
+
+    QWidget* scrollWid;
+
+    QWidget* testWid1;
+    QWidget* testWid2;
+    QWidget* testWid3;
+    QWidget* testWid4;
+    QWidget* testWid5;
+    QWidget* testWid6;
+    QWidget* testWid7;
+    QWidget* testWid8;
+    QWidget* testWid9;
+
 
     QVideoWidget* testVideoWidget;
 

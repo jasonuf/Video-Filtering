@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         videoclip.cpp
 
         player.h player.cpp
+        pool.h pool.cpp
 
 
 

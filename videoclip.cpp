@@ -1,39 +1,67 @@
 #include "videoclip.h"
 
 
-
 VideoClip::VideoClip(QObject *parent)
 : QObject{parent}
 {
-    this->setParent(parent);
 
     positionStart = 0;
     positionEnd = 0;
 
-    clipSource = new QUrl(QUrl::fromLocalFile("C:/Users/Jason/Downloads/countdown.mp4"));
+    thumbnail = nullptr;
+
+    clipSource = QUrl::fromLocalFile("C:/Users/Jason/Downloads/countdown.mp4");
 
 
     // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
-    // clipPlayer = new QMediaPlayer(this->parent());
+    clipPlayer = new QMediaPlayer(this);
+    clipSink = new QVideoSink(this);
     // clipAudio = new QAudioOutput(this->parent());
 
     // clipPlayer->setAudioOutput(clipAudio);
-    // clipPlayer->setSource(*clipSource);
+    clipPlayer->setSource(clipSource);
     // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
 
-    //clipPlayer->setVideoSink(clipSink);
+    clipPlayer->setVideoSink(clipSink);
     //clipPlayer->setVideoOutput(clipSink);
 
 
-    //connect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::frameDoSomething);
+    connect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
     //connect(clipSink, &QVideoSink::videoSizeChanged, this, &VideoClip::frameDoSomething2);
 
+
+    clipPlayer->play();
 
 }
 
 VideoClip::~VideoClip()
 {
-    delete clipSource;
+
+    delete thumbnail;
+}
+
+void VideoClip::setSource(QUrl source)
+{
+    clipSource = source;
+}
+
+void VideoClip::setFileName(QString str)
+{
+    fileName = str;
+}
+
+void VideoClip::waitForThumbnail(const QVideoFrame &frame)
+{
+    if (clipPlayer->position() >= 200)
+    {
+        thumbnail = new QImage(frame.toImage());
+
+        clipPlayer->stop();
+
+        disconnect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
+
+
+    }
 }
 
 /*

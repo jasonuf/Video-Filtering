@@ -18,16 +18,20 @@ public:
 
 
 
-    QUrl* getClipSource() const {return clipSource;}
-    // QVideoSink* getClipSink() const {return clipSink;}
-    // QMediaPlayer* getClipPlayer() const {return clipPlayer;}
-    // qint64 getClipDuration() const {return clipPlayer->duration();};
+    QUrl getClipSource() const {return clipSource;}
+    QString getFileName() const {return fileName;};
 
+    QVideoSink* getClipSink() const {return clipSink;}
+    QMediaPlayer* getClipPlayer() const {return clipPlayer;}
+    // qint64 getClipDuration() const {return clipPlayer->duration();};
+    QImage* getThumbnail() const {return thumbnail;};
 
 
     // void setClipWidget(QVideoWidget* v);
     // void setClipSink(QVideoWidget* v);
     // void setClipSink(QVideoSink* sink);
+    void setSource(QUrl source);
+    void setFileName(QString str);
 
 
     // void playPlayer();
@@ -37,12 +41,20 @@ private:
     qint64 positionStart;
     qint64 positionEnd;
 
-    // QVideoSink* clipSink;
-    // QMediaPlayer* clipPlayer;
+    QVideoSink* clipSink;
+    QMediaPlayer* clipPlayer;
     // QAudioOutput* clipAudio;
-    QUrl* clipSource;
+    QUrl clipSource;
+    QString fileName;
+
+    QImage* thumbnail;
+
+
+
 
 public slots:
+
+    void waitForThumbnail(const QVideoFrame &frame);
 
     // void frameDoSomething(const QVideoFrame &frame);
     // void frameDoSomething2();
