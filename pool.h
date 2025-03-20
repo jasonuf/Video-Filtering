@@ -37,6 +37,8 @@ public:
 
             addWidget(imageLabel);
             addWidget(fileLabel);
+
+
         }
 
     };
@@ -50,11 +52,14 @@ public slots:
 
 
 private:
-    qint16 rows;
-    qint16 cols;
+    qint16 lastRowIndex;
+    qint16 availableCols;
+    qint16 lastRowCols;
+
 
     std::vector<VideoClip*> clips;
     std::vector<ClipDisplay*> clipDisplays;
+    std::vector<QHBoxLayout*> rowLayouts;
 
     QVBoxLayout* masterLayout;
 
@@ -66,7 +71,8 @@ private:
     QLabel* testLabel;
     QWidget* testWidget;
 
-
+    void addRow();
+    void removeRow();
 
 signals:
 };

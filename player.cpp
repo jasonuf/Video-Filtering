@@ -38,7 +38,7 @@ void Player::playFromBeginning()
 
 void Player::handleStatusChange(QMediaPlayer::MediaStatus status)
 {
-    if (status == QMediaPlayer::LoadedMedia)
+    if (status == QMediaPlayer::LoadedMedia) //Only when the clip has loaded into the player can you take the duration
     {
         currentClipDuration = mainPlayer->duration();
         qInfo() << "Current Clip Duration set to: " << currentClipDuration;
@@ -48,27 +48,28 @@ void Player::handleStatusChange(QMediaPlayer::MediaStatus status)
 void Player::whenPositionChanged(qint64 pos)
 {
 
-
+    // Handle when player reaches the duration. Will change the clip's end later
     if (pos < currentClipDuration)
     {
         return;
     }
-
+    //Since first clip is done playing, move onto next clip
     currentClipIndex += 1;
 
+    //Check if clip is at the end of the player's list of clips and resets if true
     if (currentClipIndex == clips.size())
     {
         currentClipIndex = 0;
         return;
     }
-    mainPlayer->setSource(clips[currentClipIndex]->getClipSource());
+    mainPlayer->setSource(clips[currentClipIndex]->getClipSource()); //Sets the new source and plays, continueing the loop
     mainPlayer->play();
 }
 
 
 void Player::filterFrame(const QVideoFrame &frame)
 {
-
+    //temporary filter credit a la chat geepeeteee will handle later based on the clip's filters, last thing to do.
     static bool inFilter = false;
     if (inFilter)
         return;

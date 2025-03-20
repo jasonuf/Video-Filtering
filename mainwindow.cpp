@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     //initialize opened video location to be empty;
     openVideoFilesList = nullptr;
 
-    ui->setupUi(this);
+    ui->setupUi(this); //setup ui (WOW)
 
     setMinimumSize(960,540);
 
@@ -39,19 +39,21 @@ MainWindow::MainWindow(QWidget *parent)
     // QPalette wid1Pal = QPalette();
     // wid1Pal.setColor(QPalette::Button, QColor(138, 143, 150));
 
+    //Palette of window, still wondering how to change the menu palette
     this->setPalette(customPal);
     this->menuBar()->setPalette(customPal);
 
 
-
+    //masterLayout is the central layout with 2 columns.
     masterLayout = new QBoxLayout(QBoxLayout::Direction::LeftToRight, centralWidget());
     col1Layout = new QBoxLayout(QBoxLayout::Direction::TopToBottom);
     col2Layout = new QBoxLayout(QBoxLayout::Direction::TopToBottom);
 
+    //vidLayout currently holds the player 3/20/2025
     vidLayout = new QBoxLayout(QBoxLayout::Direction::TopToBottom);
     controlBarLayout = new QBoxLayout(QBoxLayout::Direction::LeftToRight);
 
-
+    //This widget will trigger the file upload, currently not in use
     videoPlaceholder = new QPushButton("Upload a Video");
     QFont f = videoPlaceholder->font();
     f.setUnderline(true);
@@ -59,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     f.setFamily("Sans Regular");
     videoPlaceholder->setFont(f);
     videoPlaceholder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
 
 
     testPlayer = new Player();
@@ -75,7 +78,6 @@ MainWindow::MainWindow(QWidget *parent)
     // testPlayer->playFromBeginning();
 
 
-    connect(videoPlaceholder,&QAbstractButton::clicked,this, &MainWindow::on_actionOpen_File_triggered);
 
 
     myWidget2 = new QWidget();
@@ -123,7 +125,7 @@ MainWindow::MainWindow(QWidget *parent)
     testScrollArea = new QScrollArea(this);
     testScrollArea->setWidgetResizable(true); // Change to false to preserve widget sizes
     testScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    testScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    testScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     testScrollArea->setAlignment(Qt::AlignTop);
 
     // Create scroll content widget
@@ -268,6 +270,7 @@ void MainWindow::on_actionOpen_File_triggered()
     openVideoFilesList = new QStringList(QFileDialog::getOpenFileNames(this,
         tr("Open Video"), "", tr("Video Files (*.mp4 *.mov)")));
 
+    //emit this signal which is sent to the pool instance
     emit sendFileStringList(openVideoFilesList);
 
     //testUrl = QUrl::fromLocalFile(openVideoFilesList->at(0));

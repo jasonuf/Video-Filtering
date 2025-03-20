@@ -21,32 +21,15 @@ VideoClip::VideoClip(QObject *parent)
 
     //For every frame change, check the video position. When the position reaches 200ms, grab thumbnail
     connect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
+    connect(clipPlayer, &QMediaPlayer::playbackStateChanged, this, &VideoClip::onMediaStop);
     clipPlayer->play();
-
-
-
-    // clipAudio = new QAudioOutput(this->parent());
-
-    // clipPlayer->setAudioOutput(clipAudio);
-    //clipPlayer->setSource(clipSource);
-    // REVERSE THIS IF PLAYER.H DOES NOT WORK---------------------
-
-
-    //clipPlayer->setVideoOutput(clipSink);
-
-
-
-    //connect(clipSink, &QVideoSink::videoSizeChanged, this, &VideoClip::frameDoSomething2);
-
-
-
-
 }
 
 VideoClip::~VideoClip()
 {
 
     delete thumbnail;
+    qInfo() << "Video Clip deleted: " << this;
     // if (clipPlayer) delete clipPlayer;
     // if (clipSink) delete clipSink;
 }
@@ -58,6 +41,7 @@ void VideoClip::setSource(QUrl source)
 
     if (clipPlayer)
     {
+        qInfo() << "Set source";
         clipPlayer->setSource(clipSource);
         clipPlayer->play();
     }
@@ -69,6 +53,16 @@ void VideoClip::setFileName(QString str)
     fileName = str;
 }
 
+void VideoClip::onMediaStop(QMediaPlayer::PlaybackState newState)
+{
+    if (newState == QMediaPlayer::StoppedState)
+    {
+        disconnect(clipPlayer, &QMediaPlayer::playbackStateChanged, this, &VideoClip::onMediaStop);
+        delete clipPlayer;
+        delete clipSink;
+    }
+}
+
 void VideoClip::waitForThumbnail(const QVideoFrame &frame)
 {
     if (clipPlayer->position() >= 200) //when the position of the video for the source reaches 200ms
@@ -78,11 +72,6 @@ void VideoClip::waitForThumbnail(const QVideoFrame &frame)
         clipPlayer->stop();
         emit thumbNailLoaded();
         disconnect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
-
-        delete clipPlayer;
-        delete clipSink;
-
-        qInfo() << "Wait for thumbnail reached";
     }
 }
 

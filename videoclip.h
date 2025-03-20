@@ -53,7 +53,8 @@ private:
     QImage* thumbnail;
 
 
-
+private slots:
+    void onMediaStop(QMediaPlayer::PlaybackState newState);
 
 public slots:
 
