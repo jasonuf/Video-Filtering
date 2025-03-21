@@ -58,8 +58,8 @@ void VideoClip::onMediaStop(QMediaPlayer::PlaybackState newState)
     if (newState == QMediaPlayer::StoppedState)
     {
         disconnect(clipPlayer, &QMediaPlayer::playbackStateChanged, this, &VideoClip::onMediaStop);
-        delete clipPlayer;
-        delete clipSink;
+        clipPlayer->deleteLater();
+        clipSink->deleteLater();
     }
 }
 
