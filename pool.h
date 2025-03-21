@@ -7,7 +7,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPixmap>
-
+#include <QResizeEvent>
 
 class Pool : public QWidget
 {
@@ -28,9 +28,6 @@ public:
 
             imageLabel = new QLabel();
             imageLabel->setFixedSize(125,70);
-
-            // imagePix = QPixmap::fromImage(*clip->getThumbnail());
-            // imageLabel->setPixmap(imagePix);
 
             fileLabel = new QLabel(clip->getFileName());
             fileLabel->setFixedSize(125,15);
@@ -73,6 +70,10 @@ private:
 
     void addRow();
     void removeRow();
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 
 signals:
 };

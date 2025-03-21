@@ -122,3 +122,9 @@ void Pool::removeRow()
     rowLayouts.pop_back();
     delete lastRow;
 }
+
+void Pool::resizeEvent(QResizeEvent *event)
+{
+    qInfo() << "New size " << width() << " Old size: " << event->oldSize();
+    QWidget::resizeEvent(event);
+}
