@@ -64,21 +64,25 @@ void Pool::addToPool(uint num)
         if (lastRowIndex == -1)
         {
             addRow();
-            rowLayouts[0]->addLayout(clipDisplays[i]);
+            rowLayouts[0]->addWidget(clipDisplays[i]);
             lastRowCols += 1;
         }
 
         else if (lastRowCols < availableCols)
         {
-            rowLayouts[lastRowIndex]->addLayout(clipDisplays[i]);
+            rowLayouts[lastRowIndex]->addWidget(clipDisplays[i]);
             lastRowCols += 1;
+
+            //rowLayouts[lastRowIndex]->addSpacing(125 * (availableCols - lastRowCols));
         }
 
         else
         {
             addRow();
-            rowLayouts[lastRowIndex]->addLayout(clipDisplays[i]);
+            rowLayouts[lastRowIndex]->addWidget(clipDisplays[i]);
             lastRowCols = 1;
+
+
         }
 
 
@@ -110,6 +114,11 @@ void Pool::addRow()
 {
     lastRowIndex += 1;
     QHBoxLayout* rowLayout = new QHBoxLayout();
+    rowLayout->setAlignment(Qt::AlignLeft);
+    rowLayout->maximumSize() = QSize(1000, 150);
+    rowLayout->setSizeConstraint(QLayout::SetMaximumSize);
+    // rowLayout->setSpacing(0);
+    // rowLayout->setContentsMargins(0,0,0,0);
     rowLayouts.push_back(rowLayout);
     masterLayout->addLayout(rowLayout);
 }

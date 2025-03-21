@@ -126,7 +126,7 @@ MainWindow::MainWindow(QWidget *parent)
     testScrollArea->setWidgetResizable(true); // Change to false to preserve widget sizes
     testScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     testScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    testScrollArea->setAlignment(Qt::AlignTop);
+    testScrollArea->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     // Create scroll content widget
     // scrollWid = new QWidget();
@@ -219,6 +219,7 @@ MainWindow::MainWindow(QWidget *parent)
     ///
     ///
     poolw = new Pool();
+    poolw->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     connect(this, &MainWindow::sendFileStringList, poolw, &Pool::addClips);
 

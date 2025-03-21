@@ -15,16 +15,20 @@ class Pool : public QWidget
 public:
     explicit Pool(QWidget *parent = nullptr);
 
-    struct ClipDisplay : public QVBoxLayout
+    class ClipDisplay : public QWidget
     {
-
-
+    public:
+        QVBoxLayout* layout;
         QLabel* imageLabel;
         QPixmap imagePix;
         QLabel* fileLabel;
 
-        ClipDisplay(QWidget* parent, VideoClip* clip) : QVBoxLayout{parent}
+        ClipDisplay(QWidget* parent, VideoClip* clip) : QWidget{parent}
         {
+            layout = new QVBoxLayout(this);
+            layout->setSpacing(2);
+            layout->setContentsMargins(2,2,2,2);
+            layout->setAlignment(Qt::AlignTop);
 
             imageLabel = new QLabel();
             imageLabel->setFixedSize(125,70);
@@ -32,10 +36,10 @@ public:
             fileLabel = new QLabel(clip->getFileName());
             fileLabel->setFixedSize(125,15);
 
-            addWidget(imageLabel);
-            addWidget(fileLabel);
+            layout->addWidget(imageLabel);
+            layout->addWidget(fileLabel);
 
-
+            setLayout(layout);
         }
 
     };
