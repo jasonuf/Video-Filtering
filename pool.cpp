@@ -7,10 +7,16 @@ Pool::Pool(QWidget *parent)
     lastRowCols = 0;
     availableCols = 0;
 
+
     masterLayout = new QVBoxLayout();
     // tempLayout = new QHBoxLayout();
     // masterLayout->addLayout(tempLayout);
     setLayout(masterLayout);
+}
+
+std::vector<VideoClip *> &Pool::getClips()
+{
+    return clips;
 }
 
 void Pool::addClips(QStringList *list)
@@ -137,3 +143,5 @@ void Pool::resizeEvent(QResizeEvent *event)
     qInfo() << "New size " << width() << " Old size: " << event->oldSize();
     QWidget::resizeEvent(event);
 }
+
+

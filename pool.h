@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QResizeEvent>
+#include <QDrag>
+#include <QMimeData>
 
 class Pool : public QWidget
 {
@@ -18,13 +20,19 @@ public:
     class ClipDisplay : public QWidget
     {
     public:
+
         QVBoxLayout* layout;
         QLabel* imageLabel;
         QPixmap imagePix;
         QLabel* fileLabel;
+        VideoClip* clip;
+        QPoint dragStartPosition;
+
 
         ClipDisplay(QWidget* parent, VideoClip* clip) : QWidget{parent}
         {
+            this->clip = clip;
+
             layout = new QVBoxLayout(this);
             layout->setSpacing(2);
             layout->setContentsMargins(2,2,2,2);
@@ -40,9 +48,40 @@ public:
             layout->addWidget(fileLabel);
 
             setLayout(layout);
+
+        }
+
+    protected:
+        void mousePressEvent(QMouseEvent *event)
+        {
+            if (event->button() == Qt::LeftButton)
+                dragStartPosition = event->pos();
+        }
+
+        void mouseMoveEvent(QMouseEvent *event)
+        {
+            if (!(event->buttons() & Qt::LeftButton))
+                return;
+            if ((event->pos() - dragStartPosition).manhattanLength() < 15)
+                return;
+
+            qInfo() << this  << " item clicked";
+            QDrag *drag = new QDrag(this);
+            QMimeData *mimeData = new QMimeData;
+
+            mimeData->setText(clip->getClipSource().path());
+            drag->setMimeData(mimeData);
+            drag->setPixmap(imagePix.scaled(QSize(100,56), Qt::IgnoreAspectRatio));
+
+            Qt::DropAction dropAction = drag->exec();
         }
 
     };
+
+
+
+    std::vector<VideoClip*>& getClips();
+
 
 public slots:
     void addClips(QStringList* list);

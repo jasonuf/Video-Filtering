@@ -15,6 +15,7 @@
 #include "videoclip.h"
 #include "player.h"
 #include "pool.h"
+#include "timeline.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -42,9 +43,8 @@ public slots:
 
 private slots:
 
-
-
     void on_actionOpen_File_triggered();
+    void manageDroppedClips(QString path, int width);
 
 
 private:
@@ -81,8 +81,6 @@ private:
 
     Pool* poolw;
 
-
-
     QScrollArea* testScrollArea;
     QGridLayout* testGridLayout;
     QVBoxLayout* testMasterLayout;
@@ -105,6 +103,9 @@ private:
 
     QVideoWidget* testVideoWidget;
 
+    Timeline* timeline;
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 };
 #endif // MAINWINDOW_H
