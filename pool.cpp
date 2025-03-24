@@ -49,6 +49,7 @@ void Pool::addClips(QStringList *list)
 
         clipDisplays.push_back(new ClipDisplay(nullptr, clips[clips.size()-1])); //constructs the clipDisplay struct based on the grabbed clip.
         //Connects the respective clip to signal after the thumbnail is loaded. Once it is, call the correct function
+        connect(clipDisplays[clips.size()-1], &ClipDisplay::clipClicked,this, &Pool::clipClickRecieved);
         connect(clips[clips.size()-1], &VideoClip::thumbNailLoaded, this, &Pool::displayThumbnail);
     }
 
@@ -114,6 +115,11 @@ void Pool::displayThumbnail()
     // qInfo() << "image pix: " << &clipDisplays[index]->imagePix;
     // qInfo() << "iamge Label: " << clipDisplays[index]->imageLabel;
 
+}
+
+void Pool::clipClickRecieved(VideoClip *clip)
+{
+    emit sendClickedClip(clip);
 }
 
 void Pool::addRow()

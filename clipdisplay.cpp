@@ -44,6 +44,7 @@ ClipDisplay::ClipDisplay(QWidget *parent, VideoClip *clip) : QWidget{parent}
 
 void ClipDisplay::mousePressEvent(QMouseEvent *event)
 {
+    emit clipClicked(clip);
     if (event->button() == Qt::LeftButton)
         dragStartPosition = event->pos();
 }

@@ -7,6 +7,7 @@ VideoClip::VideoClip(QObject *parent)
     //initialize values
     positionStart = 0;
     positionEnd = 0;
+    duration = 0;
     thumbnail = nullptr;
     clipSource = nullptr;
 
@@ -63,6 +64,11 @@ void VideoClip::setPositionEnd(qint64 end)
     positionEnd = end;
 }
 
+void VideoClip::setDuration(qint64 d)
+{
+    duration = d;
+}
+
 void VideoClip::onMediaStop(QMediaPlayer::PlaybackState newState)
 {
     if (newState == QMediaPlayer::StoppedState)
@@ -77,6 +83,7 @@ void VideoClip::waitForThumbnail(const QVideoFrame &frame)
 {
     if (clipPlayer->position() >= 200) //when the position of the video for the source reaches 200ms
     {
+        duration = clipPlayer->duration();
         thumbnail = new QImage(frame.toImage()); //convert frame to QImage
         //Clean up player and sink to free memory and disconnect signal/slot, also send signal to let the Pool know that the clip's thumbnail is done uploading
         clipPlayer->stop();

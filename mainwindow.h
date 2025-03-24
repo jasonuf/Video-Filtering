@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QAudioOutput>
 #include <QScrollArea>
+#include <QIntValidator>
 
 #include "videoclip.h"
 #include "player.h"
@@ -45,6 +46,7 @@ private slots:
 
     void on_actionOpen_File_triggered();
     void manageDroppedClips(QString path, int width);
+    void onPoolClickedClip(VideoClip* clip);
 
 
 private:

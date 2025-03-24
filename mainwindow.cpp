@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     openVideoFilesList = nullptr;
 
     ui->setupUi(this); //setup ui (WOW)
+    ui->lineEdit->setValidator(new QIntValidator(0,9999999, this));
+    ui->lineEdit_2->setValidator(new QIntValidator(0,9999999, this));
 
     setMinimumSize(960,540);
 
@@ -109,6 +111,7 @@ MainWindow::MainWindow(QWidget *parent)
     poolw->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     connect(this, &MainWindow::sendFileStringList, poolw, &Pool::addClips);
+    connect(poolw, &Pool::sendClickedClip, this, &MainWindow::onPoolClickedClip);
 
     testScrollArea->setWidget(poolw);
 
@@ -189,5 +192,10 @@ void MainWindow::manageDroppedClips(QString path, int width)
             break;
         }
     }
+}
+
+void MainWindow::onPoolClickedClip(VideoClip *clip)
+{
+    qInfo() << clip;
 }
 

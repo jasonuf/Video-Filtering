@@ -20,14 +20,11 @@ public:
 
     QUrl getClipSource() const {return clipSource;}
     QString getFileName() const {return fileName;};
-
-    QVideoSink* getClipSink() const {return clipSink;}
-    QMediaPlayer* getClipPlayer() const {return clipPlayer;}
     // qint64 getClipDuration() const {return clipPlayer->duration();};
     QImage* getThumbnail() const {return thumbnail;};
     qint64 getPositionStart() const {return positionStart;};
     qint64 getPositionEnd() const {return positionEnd;};
-
+    qint64 getDuration() const {return duration;};
 
     // void setClipWidget(QVideoWidget* v);
     // void setClipSink(QVideoWidget* v);
@@ -36,6 +33,7 @@ public:
     void setFileName(QString str);
     void setPositionStart(qint64 start);
     void setPositionEnd(qint64 end);
+    void setDuration(qint64 d);
 
 signals:
 
@@ -47,6 +45,7 @@ signals:
 private:
     qint64 positionStart;
     qint64 positionEnd;
+    qint64 duration;
 
     QVideoSink* clipSink;
     QMediaPlayer* clipPlayer;

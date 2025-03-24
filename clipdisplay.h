@@ -27,6 +27,8 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 signals:
+    void clipClicked(VideoClip* clip);
+
 };
 
 #endif // CLIPDISPLAY_H
