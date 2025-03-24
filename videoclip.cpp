@@ -53,6 +53,16 @@ void VideoClip::setFileName(QString str)
     fileName = str;
 }
 
+void VideoClip::setPositionStart(qint64 start)
+{
+    positionStart = start;
+}
+
+void VideoClip::setPositionEnd(qint64 end)
+{
+    positionEnd = end;
+}
+
 void VideoClip::onMediaStop(QMediaPlayer::PlaybackState newState)
 {
     if (newState == QMediaPlayer::StoppedState)

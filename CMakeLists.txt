@@ -29,6 +29,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         player.h player.cpp
         pool.h pool.cpp
         timeline.h timeline.cpp
+        clipdisplay.h clipdisplay.cpp
 
 
 

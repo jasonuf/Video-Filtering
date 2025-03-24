@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     // wid1Pal.setColor(QPalette::Button, QColor(138, 143, 150));
 
     //Palette of window, still wondering how to change the menu palette
-    this->setPalette(customPal);
+    //this->setPalette(customPal);
     this->menuBar()->setPalette(customPal);
 
 
@@ -124,7 +124,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Add widgets to col2Layout with stretch factors
     col2Layout->addWidget(testScrollArea, 50);
-    col2Layout->addWidget(myWidget4, 50);
+    col2Layout->addWidget(ui->widget, 50);
 
     masterLayout->addLayout(col1Layout, 2);
     masterLayout->addLayout(col2Layout, 1);
@@ -185,6 +185,8 @@ void MainWindow::manageDroppedClips(QString path, int width)
         if (clip->getClipSource().path() == path)
         {
             timeline->addClip(clip);
+            qInfo() << "timeline clip added is " << clip;
+            break;
         }
     }
 }

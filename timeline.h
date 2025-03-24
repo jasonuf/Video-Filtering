@@ -8,6 +8,8 @@
 #include <QDrag>
 #include <QMimeData>
 #include <vector>
+#include <QMediaPlayer>
+#include <QVideoSink>
 
 #include "videoclip.h"
 
@@ -28,6 +30,9 @@ private:
     QPalette pallette;
 
     std::vector<VideoClip*> clips;
+    QMediaPlayer* player;
+    QVideoSink* sink;
+
 
     QString testString;
 

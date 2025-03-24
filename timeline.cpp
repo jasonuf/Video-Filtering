@@ -5,6 +5,11 @@ Timeline::Timeline(QWidget *parent)
 {
     setAcceptDrops(true);
 
+    player = new QMediaPlayer(this);
+    sink = new QVideoSink(this);
+    player->setVideoSink(sink);
+
+
     mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
 
@@ -19,7 +24,7 @@ Timeline::Timeline(QWidget *parent)
     pallette.setColor(QPalette::Window, QColor(26, 29, 33));
     emptyWidget->setAutoFillBackground(true);
     emptyWidget->setPalette(pallette);
-    emptyWidget->setStyleSheet("border: 1px solid black; background-color: rgb(26, 29, 33)");
+    emptyWidget->setStyleSheet("border: 0.5px solid black;");
 
     clipTimeline->addWidget(emptyWidget);
 
