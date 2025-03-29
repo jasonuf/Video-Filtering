@@ -19,10 +19,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     //initialize opened video location to be empty;
     openVideoFilesList = nullptr;
+    activeClip = nullptr;
 
     ui->setupUi(this); //setup ui (WOW)
     ui->lineEdit->setValidator(new QIntValidator(0,9999999, this));
     ui->lineEdit_2->setValidator(new QIntValidator(0,9999999, this));
+    ui->label_5->setText("<i>No Clip Selected</i>");
 
     setMinimumSize(960,540);
 
@@ -83,8 +85,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     myWidget2 = new QWidget();
-    myWidget2->setAutoFillBackground(true);
-    myWidget2->setPalette(bluePal);
+    // myWidget2->setAutoFillBackground(true);
+    // myWidget2->setPalette(bluePal);
 
 
     myWidget3 = new QWidget();
@@ -125,9 +127,12 @@ MainWindow::MainWindow(QWidget *parent)
     col1Layout->addLayout(controlBarLayout, 5);
     col1Layout->addWidget(timeline, 20);
 
+    myWidget2->setLayout(ui->verticalLayout_3);
+    ui->verticalLayout_3->setAlignment(Qt::AlignTop);
+
     // Add widgets to col2Layout with stretch factors
     col2Layout->addWidget(testScrollArea, 50);
-    col2Layout->addWidget(ui->widget, 50);
+    col2Layout->addWidget(myWidget2, 50);
 
     masterLayout->addLayout(col1Layout, 2);
     masterLayout->addLayout(col2Layout, 1);
@@ -197,5 +202,14 @@ void MainWindow::manageDroppedClips(QString path, int width)
 void MainWindow::onPoolClickedClip(VideoClip *clip)
 {
     qInfo() << clip;
+    activeClip = clip;
+    setSettings(clip);
+}
+
+void MainWindow::setSettings(VideoClip *clip)
+{
+    ui->lineEdit->setText(QString::number(clip->getPositionStart()));
+    ui->lineEdit_2->setText(QString::number(clip->getDuration()));
+
 }
 

@@ -47,6 +47,7 @@ private slots:
     void on_actionOpen_File_triggered();
     void manageDroppedClips(QString path, int width);
     void onPoolClickedClip(VideoClip* clip);
+    void setSettings(VideoClip* clip);
 
 
 private:
@@ -106,6 +107,8 @@ private:
     QVideoWidget* testVideoWidget;
 
     Timeline* timeline;
+
+    VideoClip* activeClip;
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
