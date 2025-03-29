@@ -84,6 +84,7 @@ void VideoClip::waitForThumbnail(const QVideoFrame &frame)
     if (clipPlayer->position() >= 200) //when the position of the video for the source reaches 200ms
     {
         duration = clipPlayer->duration();
+        positionEnd = duration;
         thumbnail = new QImage(frame.toImage()); //convert frame to QImage
         //Clean up player and sink to free memory and disconnect signal/slot, also send signal to let the Pool know that the clip's thumbnail is done uploading
         clipPlayer->stop();

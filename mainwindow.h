@@ -40,6 +40,8 @@ signals:
 public slots:
 
     void actionTest();
+    // void saveClipStart(qint64 start);
+    // void saveClipEnd(qint64 end);
 
 
 private slots:
@@ -49,6 +51,11 @@ private slots:
     void onPoolClickedClip(VideoClip* clip);
     void setSettings(VideoClip* clip);
 
+
+
+    void on_lineEdit_editingFinished();
+
+    void on_lineEdit_2_editingFinished();
 
 private:
 

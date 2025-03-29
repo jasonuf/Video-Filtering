@@ -208,8 +208,60 @@ void MainWindow::onPoolClickedClip(VideoClip *clip)
 
 void MainWindow::setSettings(VideoClip *clip)
 {
+    ui->label_5->setText(clip->getFileName());
     ui->lineEdit->setText(QString::number(clip->getPositionStart()));
-    ui->lineEdit_2->setText(QString::number(clip->getDuration()));
+    ui->lineEdit_2->setText(QString::number(clip->getPositionEnd()));
 
+}
+
+// void MainWindow::saveClipStart(qint64 start)
+// {
+
+// }
+
+// void MainWindow::saveClipEnd(qint64 end)
+// {
+//     if (activeClip)
+//     {
+//         ui->lineEdit->setText(QString::number(end));
+//         activeClip->setPositionStart(end);
+//     }
+// }
+
+
+
+
+void MainWindow::on_lineEdit_editingFinished()
+{
+    if (activeClip)
+    {
+        qint64 num = ui->lineEdit->text().toLongLong();
+        if (num < 0 || num > ui->lineEdit_2->text().toLongLong())
+        {
+            setSettings(activeClip);
+            return;
+        }
+
+        activeClip->setPositionStart(num);
+        qInfo() << "New clip start: " << activeClip->getPositionStart();
+    }
+}
+
+
+
+void MainWindow::on_lineEdit_2_editingFinished()
+{
+    if (activeClip)
+    {
+        qint64 num = ui->lineEdit_2->text().toLongLong();
+        if (num > activeClip->getDuration() || num < ui->lineEdit->text().toLongLong())
+        {
+            setSettings(activeClip);
+            return;
+        }
+
+        activeClip->setPositionEnd(ui->lineEdit_2->text().toLongLong());
+        qInfo() << "New clip end: " << activeClip->getPositionEnd();
+    }
 }
 
