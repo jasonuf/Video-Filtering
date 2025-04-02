@@ -10,6 +10,7 @@
 #include <vector>
 #include <QMediaPlayer>
 #include <QVideoSink>
+#include <QLabel>
 
 #include "videoclip.h"
 
@@ -20,12 +21,17 @@ public:
     explicit Timeline(QWidget *parent = nullptr);
 
     void addClip(VideoClip* clip);
+    bool hasClip(VideoClip* clip);
+    void addDuration(qint64 time);
 
 private:
     QVBoxLayout* mainLayout;
     QSlider* progressSlider;
     QHBoxLayout* sliderLayout;
     QHBoxLayout* clipTimeline;
+    std::vector<QLabel*> timelineLabels;
+    //void updateTimelineLabels();
+
     QWidget* emptyWidget;
     QPalette pallette;
 
@@ -33,6 +39,8 @@ private:
     QMediaPlayer* player;
     QVideoSink* sink;
 
+    qint64 timelineDuration;
+    qint64 timelinePos;
 
     QString testString;
 
@@ -41,6 +49,7 @@ private:
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 
 signals:

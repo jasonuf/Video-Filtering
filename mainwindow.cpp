@@ -190,7 +190,7 @@ void MainWindow::manageDroppedClips(QString path, int width)
 
     for (VideoClip* clip : poolw->getClips())
     {
-        if (clip->getClipSource().path() == path)
+        if (clip->getClipSource().path() == path && !timeline->hasClip(clip))
         {
             timeline->addClip(clip);
             qInfo() << "timeline clip added is " << clip;
@@ -264,4 +264,5 @@ void MainWindow::on_lineEdit_2_editingFinished()
         qInfo() << "New clip end: " << activeClip->getPositionEnd();
     }
 }
+
 

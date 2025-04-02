@@ -5,6 +5,9 @@ Timeline::Timeline(QWidget *parent)
 {
     setAcceptDrops(true);
 
+    timelineDuration = 0;
+    timelinePos = 0;
+
     player = new QMediaPlayer(this);
     sink = new QVideoSink(this);
     player->setVideoSink(sink);
@@ -41,8 +44,35 @@ Timeline::Timeline(QWidget *parent)
 void Timeline::addClip(VideoClip *clip)
 {
     clips.push_back(clip);
-    qInfo() << "Clip added to timeline";
+    timelineDuration += clip->getPositionEnd() - clip->getPositionStart();
+
+    qInfo() << "Clip added to timeline. Duration: " << timelineDuration;
 }
+
+bool Timeline::hasClip(VideoClip *clip)
+{
+    for (int i = 0; i < clips.size(); ++i)
+    {
+        if (clip == clips[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Timeline::addDuration(qint64 time)
+{
+    timelineDuration += time;
+}
+
+// void Timeline::updateTimelineLabels()
+// {
+//     for (int i = 0; i < clips.size(); ++i)
+//     {
+//         timelineLabels.push_back(new QLabel());
+//     }
+// }
 
 void Timeline::dragEnterEvent(QDragEnterEvent *event)
 {
@@ -58,4 +88,9 @@ void Timeline::dropEvent(QDropEvent *event)
     testString = event->mimeData()->text();
     emit droppedClip(testString, event->position().toPoint().x());
 
+}
+
+void Timeline::resizeEvent(QResizeEvent *event)
+{
+    qInfo() << "TimeLine size x: " <<  event->size().width() << " y: " << event->size().height();
 }

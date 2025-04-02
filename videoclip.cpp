@@ -23,6 +23,7 @@ VideoClip::VideoClip(QObject *parent)
     //For every frame change, check the video position. When the position reaches 200ms, grab thumbnail
     connect(clipSink, &QVideoSink::videoFrameChanged, this, &VideoClip::waitForThumbnail);
     connect(clipPlayer, &QMediaPlayer::playbackStateChanged, this, &VideoClip::onMediaStop);
+
     clipPlayer->play();
 }
 
@@ -74,6 +75,7 @@ void VideoClip::onMediaStop(QMediaPlayer::PlaybackState newState)
     if (newState == QMediaPlayer::StoppedState)
     {
         disconnect(clipPlayer, &QMediaPlayer::playbackStateChanged, this, &VideoClip::onMediaStop);
+
         clipPlayer->deleteLater();
         clipSink->deleteLater();
     }
