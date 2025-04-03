@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit->setValidator(new QIntValidator(0,9999999, this));
     ui->lineEdit_2->setValidator(new QIntValidator(0,9999999, this));
     ui->label_5->setText("<i>No Clip Selected</i>");
+    ui->label_5->setWordWrap(true);
 
     setMinimumSize(960,540);
 
