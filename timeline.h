@@ -11,6 +11,7 @@
 #include <QMediaPlayer>
 #include <QVideoSink>
 #include <QLabel>
+#include <QVideoFrame>
 
 #include "videoclip.h"
 
@@ -31,6 +32,7 @@ private:
     QWidget* spacerWidget;
 
     std::vector<QLabel*> timelineLabels;
+    std::vector<qint64> labelPos;
     bool hasLoadedOnce;
     int displayHeight;
     int displayWidth;
@@ -56,6 +58,8 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
     void resizeEvent(QResizeEvent *event);
+    void manageFrameChange(const QVideoFrame &frame) const;
+    void managePlaybackState(QMediaPlayer::PlaybackState newState);
 
 
 signals:

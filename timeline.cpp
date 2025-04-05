@@ -13,6 +13,8 @@ Timeline::Timeline(QWidget *parent)
     player = new QMediaPlayer(this);
     sink = new QVideoSink(this);
     player->setVideoSink(sink);
+    connect(sink, &QVideoSink::videoFrameChanged, this, &Timeline::manageFrameChange);
+    connect(player, &QMediaPlayer::playbackStateChanged, this, &Timeline::managePlaybackState);
 
 
     mainLayout = new QVBoxLayout();
@@ -51,6 +53,18 @@ Timeline::Timeline(QWidget *parent)
 void Timeline::addClip(VideoClip *clip)
 {
     clips.push_back(clip);
+    player->setSource(clip->getClipSource());
+
+    int clipTimeDif = (clip->getPositionEnd() - clip->getPositionStart()) / numDisplays;
+    qInfo() << "Cliptimedif" << clipTimeDif;
+
+    for (int i = 0; i < numDisplays; ++i)
+    {
+        labelPos.push_back(i * clipTimeDif + clip->getPositionStart());
+        qInfo() << i * clipTimeDif + clip->getPositionStart();
+    }
+
+    player->play();
 }
 
 bool Timeline::hasClip(VideoClip *clip)
@@ -103,10 +117,36 @@ void Timeline::resizeEvent(QResizeEvent *event)
 
         qInfo() << "DISPLAY HEIGHT: " << displayHeight << " DISPLAY WIDTH: " << displayWidth << " NUMDISPLAYS: " << numDisplays;
 
-        // for (int i = 0; i < numDisplays; ++i)
-        // {
+        // clipTimeline->removeWidget(emptyWidget);
+        // emptyWidget->hide();
 
-        // }
+        for (int i = 0; i < numDisplays; ++i)
+        {
+            timelineLabels.push_back(new QLabel(this));
+            timelineLabels[i]->setText(QString::number(i));
+            timelineLabels[i]->hide();
+            // clipTimeline->addWidget(timelineLabels[i]);
+        }
+
+
+
     }
 
+}
+
+void Timeline::manageFrameChange(const QVideoFrame &frame) const
+{
+    qInfo() << "Timeline Frame changed to pos: " << player->position();
+}
+
+void Timeline::managePlaybackState(QMediaPlayer::PlaybackState newState)
+{
+    // if (newState == QMediaPlayer::PlayingState)
+    // {
+    //     for (int i = 0; i < numDisplays; ++i)
+    //     {
+    //         player->setPosition(labelPos[i]);
+    //         qInfo() << "Pos set";
+    //     }
+    // }
 }
