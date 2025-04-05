@@ -22,14 +22,20 @@ public:
 
     void addClip(VideoClip* clip);
     bool hasClip(VideoClip* clip);
-    void addDuration(qint64 time);
 
 private:
     QVBoxLayout* mainLayout;
     QSlider* progressSlider;
     QHBoxLayout* sliderLayout;
     QHBoxLayout* clipTimeline;
+    QWidget* spacerWidget;
+
     std::vector<QLabel*> timelineLabels;
+    bool hasLoadedOnce;
+    int displayHeight;
+    int displayWidth;
+    int numDisplays;
+
     //void updateTimelineLabels();
 
     QWidget* emptyWidget;
@@ -39,7 +45,7 @@ private:
     QMediaPlayer* player;
     QVideoSink* sink;
 
-    qint64 timelineDuration;
+
     qint64 timelinePos;
 
     QString testString;

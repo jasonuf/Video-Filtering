@@ -4,9 +4,11 @@ Timeline::Timeline(QWidget *parent)
     : QWidget{parent}
 {
     setAcceptDrops(true);
-
-    timelineDuration = 0;
     timelinePos = 0;
+    hasLoadedOnce = false;
+    displayHeight = 0;
+    displayWidth = 0;
+    numDisplays = 0;
 
     player = new QMediaPlayer(this);
     sink = new QVideoSink(this);
@@ -38,15 +40,17 @@ Timeline::Timeline(QWidget *parent)
     mainLayout->addLayout(sliderLayout, 1);
     mainLayout->addSpacing(5);
     mainLayout->addLayout(clipTimeline, 5);
+
+    spacerWidget = new QWidget(this);
+    mainLayout->addWidget(spacerWidget, 3);
+
+    qInfo() << "TIMELINE GEOMETRY: " << clipTimeline->geometry();
     //this->setStyleSheet("border-width: 10px;border: 2px solid black;");
 }
 
 void Timeline::addClip(VideoClip *clip)
 {
     clips.push_back(clip);
-    timelineDuration += clip->getPositionEnd() - clip->getPositionStart();
-
-    qInfo() << "Clip added to timeline. Duration: " << timelineDuration;
 }
 
 bool Timeline::hasClip(VideoClip *clip)
@@ -61,10 +65,6 @@ bool Timeline::hasClip(VideoClip *clip)
     return false;
 }
 
-void Timeline::addDuration(qint64 time)
-{
-    timelineDuration += time;
-}
 
 // void Timeline::updateTimelineLabels()
 // {
@@ -92,5 +92,21 @@ void Timeline::dropEvent(QDropEvent *event)
 
 void Timeline::resizeEvent(QResizeEvent *event)
 {
-    qInfo() << "TimeLine size x: " <<  event->size().width() << " y: " << event->size().height();
+    //qInfo() << "TimeLine size x: " <<  event->size().width() << " y: " << event->size().height();
+    //qInfo() << "TIMELINE GEOMETRY: " << clipTimeline->geometry()->
+    if (!hasLoadedOnce)
+    {
+        hasLoadedOnce = true;
+        displayHeight = clipTimeline->geometry().height();
+        displayWidth = (displayHeight / 9) * 16;
+        numDisplays = clipTimeline->geometry().width() / displayWidth;
+
+        qInfo() << "DISPLAY HEIGHT: " << displayHeight << " DISPLAY WIDTH: " << displayWidth << " NUMDISPLAYS: " << numDisplays;
+
+        // for (int i = 0; i < numDisplays; ++i)
+        // {
+
+        // }
+    }
+
 }
