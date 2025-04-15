@@ -12,7 +12,7 @@
 #include <QVideoSink>
 #include <QLabel>
 #include <QVideoFrame>
-
+#include <QTimer>
 #include "videoclip.h"
 
 class Timeline : public QWidget
@@ -32,7 +32,12 @@ private:
     QWidget* spacerWidget;
 
     std::vector<QLabel*> timelineLabels;
+    std::vector<QPixmap*> labelPics;
+
     std::vector<qint64> labelPos;
+    bool isGenerating;
+    bool hasFrameGenerated;
+    int indexToGenerate;
     bool hasLoadedOnce;
     int displayHeight;
     int displayWidth;
@@ -58,8 +63,9 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
     void resizeEvent(QResizeEvent *event);
-    void manageFrameChange(const QVideoFrame &frame) const;
+    void manageFrameChange(const QVideoFrame &frame);
     void managePlaybackState(QMediaPlayer::PlaybackState newState);
+    void managePositionChanged(qint64 position);
 
 
 signals:
