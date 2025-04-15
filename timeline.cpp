@@ -60,6 +60,8 @@ Timeline::Timeline(QWidget *parent)
 
 void Timeline::addClip(VideoClip *clip)
 {
+    emit clipAdded(clip);
+
     clips.push_back(clip);
     player->setSource(clip->getClipSource());
 

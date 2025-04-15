@@ -18,12 +18,18 @@ Player::Player(QWidget *parent)
     switchSourceTime = 0;
     currentClipIndex = 0;
     currentClipDuration = 0;
+    globalPosition = 0;
+    currentClipEnd = 0;
+    globalPositionReference = 0;
 
 }
 
 void Player::addClip(VideoClip *clip)
 {
     clips.push_back(clip);
+    startTimes.push_back(clip->getPositionStart());
+    endTimes.push_back(clip->getPositionEnd());
+    totalDuration+= clip->getPositionEnd() - clip->getPositionStart();
 }
 
 void Player::playFromBeginning()
@@ -36,20 +42,50 @@ void Player::playFromBeginning()
     mainPlayer->play();
 }
 
+void Player::regularPlay()
+{
+    mainPlayer->play();
+}
+
+void Player::regularPause()
+{
+    mainPlayer->pause();
+}
+
+void Player::playFromPosition(qint64 pos)
+{
+    if(clips.empty())
+    {
+        return;
+    }
+
+    return;
+}
+
 void Player::handleStatusChange(QMediaPlayer::MediaStatus status)
 {
     if (status == QMediaPlayer::LoadedMedia) //Only when the clip has loaded into the player can you take the duration
     {
-        currentClipDuration = mainPlayer->duration();
+        currentClipDuration = clips[currentClipIndex]->getPositionEnd() - clips[currentClipIndex]->getPositionStart();
+        currentClipEnd = clips[currentClipIndex]->getPositionEnd();
+        mainPlayer->setPosition(startTimes[currentClipIndex]);
         qInfo() << "Current Clip Duration set to: " << currentClipDuration;
     }
 }
 
 void Player::whenPositionChanged(qint64 pos)
 {
+    // globalPosition = 0;
+    // for (int i = 0; i < currentClipIndex; ++i)
+    // {
+    //     globalPosition += endTimes[i] - startTimes[i];
+    // }
+
+    globalPosition = globalPositionReference + pos - startTimes[currentClipIndex];
+    emit globalPosChanged(globalPosition);
 
     // Handle when player reaches the duration. Will change the clip's end later
-    if (pos < currentClipDuration)
+    if (pos < currentClipEnd)
     {
         return;
     }
@@ -60,8 +96,12 @@ void Player::whenPositionChanged(qint64 pos)
     if (currentClipIndex == clips.size())
     {
         currentClipIndex = 0;
+        mainPlayer->stop();
         return;
     }
+
+    calculateGlobalPositionReference();
+    mainPlayer->pause();
     mainPlayer->setSource(clips[currentClipIndex]->getClipSource()); //Sets the new source and plays, continueing the loop
     mainPlayer->play();
 }
@@ -112,6 +152,16 @@ void Player::filterFrame(const QVideoFrame &frame)
     inFilter = true;
     this->videoSink()->setVideoFrame(copyFrame);
     inFilter = false;
+}
+
+void Player::calculateGlobalPositionReference()
+{
+    globalPositionReference = 0;
+
+    for (int i = 0; i < currentClipIndex; ++i)
+    {
+        globalPositionReference += endTimes[i] - startTimes[i];
+    }
 }
 
 

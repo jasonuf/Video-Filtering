@@ -21,8 +21,11 @@ class Timeline : public QWidget
 public:
     explicit Timeline(QWidget *parent = nullptr);
 
-    void addClip(VideoClip* clip);
+
     bool hasClip(VideoClip* clip);
+
+public slots:
+    void addClip(VideoClip* clip);
 
 private:
     QVBoxLayout* mainLayout;
@@ -70,6 +73,7 @@ protected:
 
 signals:
     void droppedClip(QString path, int width);
+    void clipAdded(VideoClip* clip);
 };
 
 #endif // TIMELINE_H

@@ -100,7 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->pushButton->setStyleSheet("QPushButton:enabled { background-color: rgb(97, 107, 107); }\n");
     controlBarLayout->addWidget(ui->pushButton, 0, Qt::AlignLeft);
-    //connect(ui->pushButton, &QAbstractButton::clicked,this, &MainWindow::pausePlay);
+    connect(ui->pushButton, &QAbstractButton::clicked,this, &MainWindow::pausePlay);
 
 
     // Create and set up QScrollArea
@@ -121,7 +121,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     timeline = new Timeline(this);
     connect(timeline, &Timeline::droppedClip, this, &MainWindow::manageDroppedClips);
-
+    connect(timeline, &Timeline::clipAdded, testPlayer, &Player::addClip);
 
 
     col1Layout->addLayout(vidLayout, 75);
@@ -212,6 +212,29 @@ void MainWindow::setSettings(VideoClip *clip)
     ui->label_5->setText(clip->getFileName());
     ui->lineEdit->setText(QString::number(clip->getPositionStart()));
     ui->lineEdit_2->setText(QString::number(clip->getPositionEnd()));
+
+}
+
+void MainWindow::pausePlay()
+{
+    if (ui->pushButton->isChecked()){
+
+        if (testPlayer->getPlaybackState() == QMediaPlayer::StoppedState)
+        {
+            if (testPlayer->getCurrentClipIndex() == 0)
+            {
+                testPlayer->playFromBeginning();
+            }
+
+        }
+
+    testPlayer->regularPlay();
+
+
+    }
+    else{
+        testPlayer->regularPause();
+    }
 
 }
 

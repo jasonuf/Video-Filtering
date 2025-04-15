@@ -51,6 +51,7 @@ private slots:
     void onPoolClickedClip(VideoClip* clip);
     void setSettings(VideoClip* clip);
 
+    void pausePlay();
 
 
     void on_lineEdit_editingFinished();
