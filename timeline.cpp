@@ -150,7 +150,7 @@ void Timeline::manageFrameChange(const QVideoFrame &frame)
 {
 
 
-    if (!hasFrameGenerated && std::abs(player->position() - labelPos[indexToGenerate]) == 0){
+    if (!hasFrameGenerated && std::abs(player->position() - labelPos[indexToGenerate]) <= 100){
         QImage tempImage = frame.toImage();
 
         qInfo() << "Timeline Frame changed to pos: " << player->position() << " index at: " << indexToGenerate;
@@ -170,8 +170,8 @@ void Timeline::manageFrameChange(const QVideoFrame &frame)
 
             player->setPosition(labelPos[indexToGenerate]);
 
-            QTimer::singleShot(100, this, [this]() {
-                if (isGenerating) {
+            QTimer::singleShot(50, this, [this]() {
+                if (isGenerating){
                     hasFrameGenerated = false;
                 }
             });
