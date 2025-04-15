@@ -146,8 +146,8 @@ void Pool::removeRow()
 
 void Pool::resizeEvent(QResizeEvent *event)
 {
-    qInfo() << "New size " << width() << " Old size: " << event->oldSize();
-    QWidget::resizeEvent(event);
+    // qInfo() << "New size " << width() << " Old size: " << event->oldSize();
+    // QWidget::resizeEvent(event);
 }
 
 
