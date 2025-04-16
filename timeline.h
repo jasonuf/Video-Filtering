@@ -26,6 +26,8 @@ public:
 
 public slots:
     void addClip(VideoClip* clip);
+    void setSliderMaximum(qint64 max);
+    void setSliderValue(qint64 value);
 
 private:
     QVBoxLayout* mainLayout;
@@ -45,6 +47,8 @@ private:
     int displayHeight;
     int displayWidth;
     int numDisplays;
+
+    qint64 totalDuration;
 
     //void updateTimelineLabels();
 
@@ -69,11 +73,15 @@ protected:
     void manageFrameChange(const QVideoFrame &frame);
     void managePlaybackState(QMediaPlayer::PlaybackState newState);
     void managePositionChanged(qint64 position);
+    void manageSliderPressed();
+    void manageSliderReleased();
 
 
 signals:
     void droppedClip(QString path, int width);
     void clipAdded(VideoClip* clip);
+    void tSliderPressed(bool val);
+    void tSliderReleased(int pos);
 };
 
 #endif // TIMELINE_H

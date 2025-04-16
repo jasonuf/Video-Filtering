@@ -12,6 +12,7 @@ Timeline::Timeline(QWidget *parent)
     displayHeight = 0;
     displayWidth = 0;
     numDisplays = 0;
+    totalDuration = 0;
 
     player = new QMediaPlayer(this);
     sink = new QVideoSink(this);
@@ -27,6 +28,9 @@ Timeline::Timeline(QWidget *parent)
     progressSlider = new QSlider(Qt::Horizontal,  this);
     sliderLayout = new QHBoxLayout();
     clipTimeline = new QHBoxLayout();
+    progressSlider->setMinimum(0);
+    connect(progressSlider, &QSlider::sliderPressed, this, &Timeline::manageSliderPressed);
+    connect(progressSlider, &QSlider::sliderReleased, this, &Timeline::manageSliderReleased);
 
     clipTimeline->setContentsMargins(0,0,0,0);
     clipTimeline->setSpacing(0);
@@ -74,10 +78,24 @@ void Timeline::addClip(VideoClip *clip)
         qInfo() << i * clipTimeDif + clip->getPositionStart();
     }
 
+    totalDuration += clip->getPositionEnd() - clip->getPositionStart();
+    progressSlider->setMaximum(totalDuration);
+
+
     hasFrameGenerated = false;
     isGenerating = true;
     indexToGenerate = 0;
     player->play();
+}
+
+void Timeline::setSliderMaximum(qint64 max)
+{
+    progressSlider->setMaximum(max);
+}
+
+void Timeline::setSliderValue(qint64 value)
+{
+    progressSlider->setValue(value);
 }
 
 bool Timeline::hasClip(VideoClip *clip)
@@ -219,5 +237,15 @@ void Timeline::managePositionChanged(qint64 position)
     //     }
     // }
 
+}
+
+void Timeline::manageSliderPressed()
+{
+    emit tSliderPressed(false);
+}
+
+void Timeline::manageSliderReleased()
+{
+    emit tSliderReleased(progressSlider->value());
 }
 

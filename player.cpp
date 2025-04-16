@@ -21,7 +21,8 @@ Player::Player(QWidget *parent)
     globalPosition = 0;
     currentClipEnd = 0;
     globalPositionReference = 0;
-
+    isStartAuto = true;
+    customStartPos = 0;
 }
 
 void Player::addClip(VideoClip *clip)
@@ -34,6 +35,9 @@ void Player::addClip(VideoClip *clip)
 
 void Player::playFromBeginning()
 {
+    if (clips.size() == 0){
+        return;
+    }
     //Set the current playing clip to be the first Index.
     currentClipIndex = 0;
     //Get the clip's source based off the index and then connect the player's source to that. Then connect the
@@ -62,14 +66,68 @@ void Player::playFromPosition(qint64 pos)
     return;
 }
 
+void Player::manageSliderPressed(bool val)
+{
+    if (val == false)
+    {
+        mainPlayer->pause();
+    }
+
+}
+
+void Player::setGlobalPosition(int pos)
+{
+
+    isStartAuto = false;
+
+    globalPosition = pos;
+
+    int endOfCurrentClip = 0;
+    int endOfClipBefore = 0;
+
+    for (int i = 0; i < clips.size(); ++i)
+    {
+        endOfCurrentClip += endTimes[i] - startTimes[i];
+        endOfClipBefore = endOfCurrentClip - (endTimes[i] - startTimes[i]);
+
+        qInfo() << "End of current clip: " << endOfCurrentClip << " Global position: " << globalPosition;
+
+        if (globalPosition < endOfCurrentClip)
+        {
+            currentClipIndex = i;
+            customStartPos = startTimes[i] + (globalPosition - endOfClipBefore);
+            qInfo() << "Custom start pos" << customStartPos;
+            break;
+        }
+    }
+
+    calculateGlobalPositionReference();
+
+    mainPlayer->setSource(clips[currentClipIndex]->getClipSource());
+
+    //mainPlayer->play();
+}
+
 void Player::handleStatusChange(QMediaPlayer::MediaStatus status)
 {
-    if (status == QMediaPlayer::LoadedMedia) //Only when the clip has loaded into the player can you take the duration
+
+    if (status == QMediaPlayer::BufferedMedia) //Only when the clip has loaded into the player can you take the duration
     {
-        currentClipDuration = clips[currentClipIndex]->getPositionEnd() - clips[currentClipIndex]->getPositionStart();
-        currentClipEnd = clips[currentClipIndex]->getPositionEnd();
-        mainPlayer->setPosition(startTimes[currentClipIndex]);
-        qInfo() << "Current Clip Duration set to: " << currentClipDuration;
+        if (isStartAuto){
+            currentClipDuration = clips[currentClipIndex]->getPositionEnd() - clips[currentClipIndex]->getPositionStart();
+            currentClipEnd = clips[currentClipIndex]->getPositionEnd();
+            mainPlayer->setPosition(startTimes[currentClipIndex]);
+            qInfo() << "Playing auto at pos: " << startTimes[currentClipIndex];
+        }
+        else{
+            currentClipDuration = clips[currentClipIndex]->getPositionEnd() - clips[currentClipIndex]->getPositionStart();
+            currentClipEnd = clips[currentClipIndex]->getPositionEnd();
+            mainPlayer->setPosition(customStartPos);
+            qInfo() << "Playing custom at pos: " << customStartPos;
+
+
+            isStartAuto = true;
+        }
     }
 }
 
@@ -80,6 +138,14 @@ void Player::whenPositionChanged(qint64 pos)
     // {
     //     globalPosition += endTimes[i] - startTimes[i];
     // }
+    static qint64 lastRawPos = -1;
+
+    if (lastRawPos >= 0 && pos < lastRawPos) {
+        lastRawPos = pos;
+        return;
+    }
+    lastRawPos = pos;
+
 
     globalPosition = globalPositionReference + pos - startTimes[currentClipIndex];
     emit globalPosChanged(globalPosition);

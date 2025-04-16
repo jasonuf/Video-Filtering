@@ -6,6 +6,8 @@
 #include <QMediaPlayer>
 #include <QVideoSink>
 #include <QAudioOutput>
+#include <QTimer>
+
 
 #include "videoclip.h"
 
@@ -18,6 +20,7 @@ public:
     int getCurrentClipIndex() const {return currentClipIndex;}
     QMediaPlayer::PlaybackState getPlaybackState() const {return mainPlayer->playbackState();}
     qint64 getTotalDuration() const {return totalDuration;}
+    QUrl getPlayerSource() const {return mainPlayer->source();}
 
 public slots:
     void addClip(VideoClip *clip);
@@ -26,6 +29,8 @@ public slots:
     void regularPlay();
     void regularPause();
     void playFromPosition(qint64 pos);
+    void manageSliderPressed(bool val);
+    void setGlobalPosition(int pos);
 
 private slots:
 
@@ -50,6 +55,9 @@ private:
     qint64 currentClipEnd;
     qint64 globalPosition;
     qint64 globalPositionReference;
+    qint64 customStartPos;
+    bool isStartAuto;
+
 
 
     void calculateGlobalPositionReference();

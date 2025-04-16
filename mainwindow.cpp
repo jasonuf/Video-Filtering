@@ -123,6 +123,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timeline, &Timeline::droppedClip, this, &MainWindow::manageDroppedClips);
     connect(timeline, &Timeline::clipAdded, testPlayer, &Player::addClip);
 
+    connect(testPlayer, &Player::globalPosChanged, timeline, &Timeline::setSliderValue);
+    connect(timeline, &Timeline::tSliderPressed, testPlayer, &Player::manageSliderPressed);
+    connect(timeline, &Timeline::tSliderPressed, ui->pushButton, &QPushButton::setChecked);
+    connect(timeline, &Timeline::tSliderReleased, testPlayer, &Player::setGlobalPosition);
+
 
     col1Layout->addLayout(vidLayout, 75);
     col1Layout->addLayout(controlBarLayout, 5);
@@ -219,16 +224,13 @@ void MainWindow::pausePlay()
 {
     if (ui->pushButton->isChecked()){
 
-        if (testPlayer->getPlaybackState() == QMediaPlayer::StoppedState)
+        if (testPlayer->getPlayerSource() == QUrl(""))
         {
-            if (testPlayer->getCurrentClipIndex() == 0)
-            {
                 testPlayer->playFromBeginning();
-            }
-
         }
-
-    testPlayer->regularPlay();
+        else{
+            testPlayer->regularPlay();
+        }
 
 
     }
